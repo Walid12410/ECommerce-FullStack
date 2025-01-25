@@ -2,7 +2,6 @@ const asyncHandler = require("express-async-handler");
 const { validationNewCategory,
     validationupdateCategory
 } = require("../validators/categoryValidator");
-
 const categoryModel = require("../model/category");
 
 
