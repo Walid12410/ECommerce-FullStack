@@ -22,6 +22,46 @@ const productModel = {
         }
     },
 
+    async getAllProductByCompany(page,limit,companyNo) {
+        try {
+            const pool = await poolPromise();
+
+            const result = await pool.request()
+                .input('page', sql.Int, page)
+                .input('limit', sql.Int, limit)
+                .input('companyNo', sql.Int, companyNo)
+                .query(`SELECT * FROM Product WHERE CompanyNo = @companyNo
+                    ORDER BY ProductNo OFFSET (@page-1)*@limit
+                    ROWS FETCH NEXT @limit ROWS ONLY
+                `);
+
+            return result.recordset;
+        } catch (error) {
+            console.log("Error fetch product: ", error);
+            throw error;
+        }
+    },
+
+    async getAllProductBySubCategory(page,limit,subCategoryNo) {
+        try {
+            const pool = await poolPromise();
+
+            const result = await pool.request()
+                .input('page', sql.Int, page)
+                .input('limit', sql.Int, limit)
+                .input('subCategoryNo', sql.Int, subCategoryNo)
+                .query(`SELECT * FROM Product WHERE SubCategoryNo = @subCategoryNo
+                    ORDER BY ProductNo OFFSET (@page-1)*@limit
+                    ROWS FETCH NEXT @limit ROWS ONLY
+                `);
+
+            return result.recordset;
+        } catch (error) {
+            console.log("Error fetch product: ", error);
+            throw error;
+        }
+    },
+
     async getOneProduct(productNo) {
         try {
             const pool = await poolPromise();
@@ -42,14 +82,15 @@ const productModel = {
             const pool = await poolPromise();
 
             const result = await pool.request()
-                .input('CompanyNo', sql.NVarChar, product.CompanyNo)
+                .input('CompanyNo', sql.Int, product.CompanyNo)
                 .input('ProductName', sql.NVarChar, product.ProductName)
-                .input('ProductDesc', sql.Decimal, product.ProductDesc)
+                .input('ProductDesc', sql.NVarChar, product.ProductDesc)
                 .input('Price', sql.Int, product.Price)
                 .input('Stock', sql.Int, product.Stock)
                 .input('SubCategoryNo', sql.Int, product.SubCategoryNo)
                 .input('CreatedAt', sql.DateTime, product.CreatedAt)
-                .input('ProductImage', sql.DateTime, product.ProductImage)
+                .input('ProductImage', sql.NVarChar, product.ProductImage)
+                .input('ProductImageID', sql.NVarChar, product.ProductImageID)
                 .query(`
                     IF NOT EXISTS (SELECT 1 FROM SubCategory WHERE SubCategoryNo = @SubCategoryNo)
                     BEGIN
@@ -60,8 +101,8 @@ const productModel = {
                         SELECT 'companyNotFound' AS Status
                     END
                     ELSE BEGIN
-                        INSERT INTO Product (CompanyNo, ProductName, ProductDesc, Price, Stock, SubCategoryNo, CreatedAt, ProductImage)
-                        VALUES (@CompanyNo, @ProductName, @ProductDesc, @Price, @Stock, @SubCategoryNo, @CreatedAt, @ProductImage)
+                        INSERT INTO Product (CompanyNo, ProductName, ProductDesc, Price, Stock, SubCategoryNo, CreatedAt, ProductImage, ProductImageID)
+                        VALUES (@CompanyNo, @ProductName, @ProductDesc, @Price, @Stock, @SubCategoryNo, @CreatedAt, @ProductImage, @ProductImageID)
 
                         SELECT 'success' AS Status
                     END
@@ -70,7 +111,7 @@ const productModel = {
             const status = result.recordsets[0][0].Status; // Get status result
             if (status === 'subCategoryNotFound') return { subCategoryNotFound: true };
             if (status === 'companyNotFound') return { companyNotFound: true };
-            if (status === 'success') return { message: "Product created successfully" };
+            if (status === 'success') return { success : true};
 
         } catch (error) {
             console.log("Error create product: ", error);
