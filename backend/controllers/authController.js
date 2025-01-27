@@ -58,7 +58,7 @@ module.exports.loginUserController = asyncHandler(async (req, res) => {
     }
 
     // generate token
-    const token = generateToken(user.UserNo, user.IsAdmin,res);
+    const token = generateToken(user.UserNo, user.IsAdmin, res);
 
     // Omit the password from the user object before sending it in the response
     const { Password, ...userWithoutPassword } = user;
@@ -68,4 +68,31 @@ module.exports.loginUserController = asyncHandler(async (req, res) => {
         user: userWithoutPassword, // Return the user object without the password
         token
     });
+});
+
+
+/**
+ * @desc logout user
+ * @Route /api/auth/logout
+ * @method POST
+ * @access public 
+ * @param {Object} res - Express response object
+*/
+module.exports.logoutUserController  = asyncHandler(async(_, res) => {
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.status(200).json({ message: "Logged out successfully" });
+});
+
+
+/**
+ * @desc check auth
+ * @Route /api/auth/check
+ * @method get
+ * @access private (required user token) 
+*/
+module.exports.checkAuthController = asyncHandler(async(req,res)=>{
+    const user = await userModel.getUserById(req.user.userId);
+    if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+    res.status(200).json({ message: "Authorized", user });
 });

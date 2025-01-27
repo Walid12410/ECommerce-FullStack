@@ -15,8 +15,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Routes
 app.use("/api/auth",require("./routes/authRoute"));
 app.use("/api/user",require("./routes/userRoute"));
+app.use("/api/auth-company",require("./routes/companyAuthRoute"));
 app.use("/api/category",require("./routes/categoryRoute"));
 app.use("/api/sub-category",require("./routes/subCategoryRoute"));
+app.use("/api/product",require("./routes/productRoute"));
 
 
 

@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
 
-const jwt_secret_code = process.env.JWT_SECRET; // Store this in .env for production
+const jwt_secret_code = process.env.JWT_SECRET_COMPANY; // Store this in .env for production
 
 // Function to generate JWT token
-function generateToken(userId, isAdmin, res) {
-  const payload = { userId, isAdmin };
+function generateCompanyToken(userId, companyNo, res) {
+  const payload = { userId, companyNo };
 
   // Sign the token with a secret and set an expiration time (e.g., 1 hour)
   const token = jwt.sign(payload, jwt_secret_code, { expiresIn: '7d' });
@@ -21,5 +21,5 @@ function generateToken(userId, isAdmin, res) {
 };
 
 module.exports = {
-  generateToken
+    generateCompanyToken
 }

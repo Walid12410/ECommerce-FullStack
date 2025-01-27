@@ -1,58 +1,58 @@
 const jwt = require("jsonwebtoken");
 
-//Verfity Token
-function verfiyToken(req,res,next){
-    const authToken = req.headers.authorization;
-    if(authToken){
-        const token = authToken.split(" ")[1];
+// Verify Token from cookies
+function verifyToken(req, res, next) {
+    const token = req.cookies.jwt;  // Extract JWT from cookies
+
+    if (token) {
         try {
-            const decodedPayLoad = jwt.verify(token , process.env.JWT_SECRET );
+            const decodedPayLoad = jwt.verify(token, process.env.JWT_SECRET);
             req.user = decodedPayLoad;
             next();
         } catch (error) {
-            return res.status(401).json({message : "Inavlid token, access denied"});
+            return res.status(401).json({ message: "Invalid token, access denied" });
         }
-    }else{
-        return res.status(401).json({message: "no token provided, access denied"});
+    } else {
+        return res.status(401).json({ message: "No token provided, access denied" });
     }
 }
 
 // Verify token and admin
-function verifyTokenAndAdmin(req,res,next){
-    verfiyToken(req,res,()=>{
-        if(req.user.isAdmin){
+function verifyTokenAndAdmin(req, res, next) {
+    verifyToken(req, res, () => {
+        if (req.user.isAdmin) {
             next();
-        }else{
-            return res.status(403).json({message : "not allowed, only admin"});
+        } else {
+            return res.status(403).json({ message: "Not allowed, only admin" });
         }
     });
 }
 
-// Verify token and only user himeself
-function verfiyTokenAndOnlyUser(req,res,next){
-    verfiyToken(req,res,()=>{
-        if(req.user.userId === parseInt(req.params.id)){
+// Verify token and only user himself
+function verifyTokenAndOnlyUser(req, res, next) {
+    verifyToken(req, res, () => {
+        if (req.user.userId === parseInt(req.params.id)) {
             next();
-        }else{
-            return res.status(403).json({message : "not allowed, only user him self"});
+        } else {
+            return res.status(403).json({ message: "Not allowed, only user himself" });
         }
     });
 }
 
-// Verify token and authorization
-function verfiyTokenAndAuthorization(req,res,next){
-    verfiyToken(req,res,()=>{
-        if(req.user.userId || req.user.isAdmin){
+// Verify token and authorization (user or admin)
+function verifyTokenAndAuthorization(req, res, next) {
+    verifyToken(req, res, () => {
+        if (req.user.userId || req.user.isAdmin) {
             next();
-        }else{
-            return res.status(403).json({message : "not allowed, only user himeself or admin"});
+        } else {
+            return res.status(403).json({ message: "Not allowed, only user himself or admin" });
         }
     });
 }
 
 module.exports = {
-    verfiyToken,
+    verifyToken,
     verifyTokenAndAdmin,
-    verfiyTokenAndOnlyUser,
-    verfiyTokenAndAuthorization
-}
+    verifyTokenAndOnlyUser,
+    verifyTokenAndAuthorization
+};

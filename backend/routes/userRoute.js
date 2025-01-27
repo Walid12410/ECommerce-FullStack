@@ -1,10 +1,10 @@
 const { getAllUserController, updateUserProfileController } = require("../controllers/userController");
-const { verifyTokenAndAdmin, verfiyTokenAndOnlyUser } = require("../middlewares/checkToken");
+const { verifyTokenAndAdmin, verifyTokenAndOnlyUser } = require("../middlewares/checkToken");
 const router = require("express").Router();
 
 
 // api/user/:id
-router.put("/:id",verfiyTokenAndOnlyUser,updateUserProfileController)
+router.put("/:id",verifyTokenAndOnlyUser,updateUserProfileController)
 
 // api/user
 router.get("/",verifyTokenAndAdmin,getAllUserController)
