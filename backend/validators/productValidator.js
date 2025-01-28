@@ -11,6 +11,9 @@ function validationCreateProduct(obj) {
         SubCategoryNo: Joi.number().integer().required(),
         CreatedAt : Joi.date().required(),
         CompanyNo : Joi.number().required(),
+        ColorNo : Joi.number().required(),
+        BrandNo : Joi.number().required(),
+        GenderNo : Joi.number().required()
     });
 
     return schema.validate(obj);
@@ -25,6 +28,9 @@ function validationUpdateProduct(obj) {
         Price: Joi.number().required(),
         Stock: Joi.number().required(),
         SubCategoryNo: Joi.number().integer().required(),
+        ColorNo : Joi.number().required(),
+        BrandNo : Joi.number().required(),
+        GenderNo : Joi.number().required()
     });
 
     return schema.validate(obj);

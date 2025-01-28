@@ -37,23 +37,39 @@ module.exports.createProductController = asyncHandler(async (req, res) => {
             Stock: req.body.Stock,
             SubCategoryNo: req.body.SubCategoryNo,
             CreatedAt: req.body.CreatedAt,
+            ColorNo: req.body.ColorNo,
+            BrandNo: req.body.BrandNo,
+            GenderNo: req.body.GenderNo,
             ProductImage: imageResult.secure_url,
             ProductImageID: imageResult.public_id
-        }
+        };
 
         const result = await productModel.createProduct(product);
-        if (result.subCategoryNotFound) {
-            return res.status(404).json({ message: "SubCategory not found" });
-        } else if (result.companyNotFound) {
-            return res.status(404).json({ message: "Company not found" });
-        } else if (result.success) {
-            return res.status(201).json({ message: "Product created successfully" });
-        } else {
-            return res.status(500).json({ message: "Internal server error" });
-        }
 
+        switch (true) {
+            case result.subCategoryNotFound:
+                return res.status(404).json({ message: "SubCategory not found" });
+
+            case result.companyNotFound:
+                return res.status(404).json({ message: "Company not found" });
+
+            case result.colorNotFound:
+                return res.status(404).json({ message: "Color not found" });
+
+            case result.brandNotFound:
+                return res.status(404).json({ message: "Brand not found" });
+
+            case result.genderNotFound:
+                return res.status(404).json({ message: "Gender not found" });
+
+            case result.success:
+                return res.status(201).json({ message: "Product created successfully" });
+
+            default:
+                return res.status(500).json({ message: "Internal server error" });
+        }
     } catch (error) {
-        console.log("Error create product: ", error);
+        console.log("Error creating product: ", error);
         return res.status(500).json({ message: error.message });
     } finally {
         if (fs.existsSync(imagePath)) {
@@ -70,7 +86,7 @@ module.exports.createProductController = asyncHandler(async (req, res) => {
  * @access public
 */
 module.exports.getProductsController = asyncHandler(async (req, res) => {
-    const { page, limit, companyNo, subCategoryNo } = req.query;
+    const { page, limit, companyNo, subCategoryNo, BrandNo, GenderNo } = req.query;
 
     if (!page || !limit) {
         return res.status(400).json({ message: "Page and limit query is required" });
@@ -81,13 +97,19 @@ module.exports.getProductsController = asyncHandler(async (req, res) => {
     }
 
     if (companyNo) {
-        const result = await productModel.getAllProductByCompany(page, limit, companyNo);
+        const result = await productModel.getProductByCompany(page, limit, companyNo);
         return res.status(200).json(result);
     } else if (subCategoryNo) {
-        const result = await productModel.getAllProductBySubCategory(page, limit, subCategoryNo);
+        const result = await productModel.getProductBySubCategory(page, limit, subCategoryNo);
+        return res.status(200).json(result);
+    } else if (BrandNo) {
+        const result = await productModel.getProductByBrand(page, limit, BrandNo);
+        return res.status(200).json(result);
+    } else if (GenderNo) {
+        const result = await productModel.getProductByGender(page, limit, GenderNo);
         return res.status(200).json(result);
     } else {
-        const result = await productModel.getAllProduct(page, limit);
+        const result = await productModel.getProduct(page, limit);
         return res.status(200).json(result);
     }
 });
@@ -123,7 +145,7 @@ module.exports.updateProductController = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: error.details[0].message });
     }
 
-    if (req.params.id === undefined || req.params.id === "") {
+    if (!req.params.id) {
         return res.status(400).json({ message: "Product id is required" });
     }
 
@@ -134,22 +156,41 @@ module.exports.updateProductController = asyncHandler(async (req, res) => {
         Price: req.body.Price,
         Stock: req.body.Stock,
         SubCategoryNo: req.body.SubCategoryNo,
+        ColorNo: req.body.ColorNo,
+        BrandNo: req.body.BrandNo,
+        GenderNo: req.body.GenderNo
     };
 
     const result = await productModel.updateProduct(product);
-    if (result.subCategoryNotFound) {
-        return res.status(404).json({ message: "SubCategory not found" });
-    } else if (result.productNotFound) {
-        return res.status(404).json({ message: "Product not found" });
-    } else if (result.success) {
-        return res.status(200).json({
-            "message": "Product updated successfully",
-            "updateProduct": product
-        });
-    } else {
-        return res.status(500).json({ message: "Falid to update product" });
+
+    switch (true) {
+        case result.subCategoryNotFound:
+            return res.status(404).json({ message: "SubCategory not found" });
+
+        case result.productNotFound:
+            return res.status(404).json({ message: "Product not found" });
+
+        case result.colorNotFound:
+            return res.status(404).json({ message: "Color not found" });
+
+        case result.brandNotFound:
+            return res.status(404).json({ message: "Brand not found" });
+
+        case result.genderNotFound:
+            return res.status(404).json({ message: "Gender not found" });
+
+        case result.success:
+            return res.status(200).json({
+                message: "Product updated successfully",
+                updateProduct: product
+            });
+
+        default:
+            return res.status(500).json({ message: "Failed to update product" });
     }
+
 });
+
 
 
 /**
