@@ -2,7 +2,7 @@
   "name": "myapp",
   "version": "1.0.0",
   "description": "My Express App",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
     "dev": "nodemon app"
   },
