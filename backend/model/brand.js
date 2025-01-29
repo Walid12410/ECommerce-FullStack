@@ -32,7 +32,7 @@ const brandModel = {
                     ELSE BEGIN
                       INSERT INTO Brand (BrandName, BrandImage, ImageID ) VALUES (@BrandName, @BrandImage, @ImageID) 
 
-                      SELECT 'SUCCESS' AS Status
+                      SELECT 'success' AS Status
                     END
                 `)
 
@@ -78,6 +78,56 @@ const brandModel = {
         }
     },
 
+    async changeBrandImage(brand) {
+        try {
+            const pool = await poolPromise();
+
+            const result = await pool.request()
+                .input('BrandID', sql.Int, brand.brandId)
+                .input('BrandImage', sql.NVarChar, brand.image)
+                .input('ImageID', sql.NVarChar, brand.imageId)
+                .query(`
+                    IF NOT EXISTS (SELECT * FROM Brand WHERE BrandID = @BrandID)
+                    BEGIN
+                        SELECT 'notFound' AS Status
+                    END
+                    ELSE BEGIN
+                        UPDATE Brand SET BrandImage = @BrandImage, ImageID = @ImageID WHERE BrandID = @BrandID
+
+                        SELECT 'success' AS Status
+                    END
+                `);
+
+            const status = result.recordset[0].Status;
+            if (status === 'notFound') return { notFound: true };
+            if (status === 'success') return { success: true };
+
+            throw new Error("Failed to update brand");
+        } catch (error) {
+            console.log("Error update brand", error);
+            throw error;
+        }
+    },
+
+    async checkBrand(brandID){
+        try {
+            const pool = await poolPromise();
+
+            const result = await pool.request()
+                .input('BrandID',sql.Int, brandID)
+                .query(`SELECT * FROM Brand WHERE BrandID = @BrandID`);
+
+            if (result.recordset.length > 0) {
+                return { brandInOrder: true };
+            } else {
+                return { brandNotFound: true };
+            }
+    
+        } catch (error) {
+            console.log("Error check brand: ", error);
+            throw error;
+        }
+    },
 
     async deleteBrand(brandNo) {
         try {
@@ -101,8 +151,8 @@ const brandModel = {
                 `);
 
             const status = result.recordset[0].Status.toLowerCase();
-            if (status === "notfound") return { notFound: true };
-            if (status === "usedinproduct") return { usedInProduct: true };
+            if (status === "notFound") return { notFound: true };
+            if (status === "usedInProduct") return { usedInProduct: true };
             if (status === "success") return { success: true };
 
             throw new Error("Failed to delete brand");

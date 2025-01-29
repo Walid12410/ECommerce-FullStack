@@ -40,7 +40,6 @@ function validationUpdateProduct(obj) {
 // validation update product
 function validationUpdateImage(obj) {
     const schema = Joi.object({
-        ProductImage: Joi.string().required(),
         ProductImageID: Joi.string().required(),
     });
 

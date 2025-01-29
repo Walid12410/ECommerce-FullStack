@@ -18,6 +18,8 @@ app.use("/api/user",require("./routes/userRoute"));
 app.use("/api/auth-company",require("./routes/companyAuthRoute"));
 app.use("/api/category",require("./routes/categoryRoute"));
 app.use("/api/sub-category",require("./routes/subCategoryRoute"));
+app.use("/api/brand",require("./routes/brandRoute"));
+app.use("/api/color",require("./routes/colorRoute"));
 app.use("/api/product",require("./routes/productRoute"));
 
 

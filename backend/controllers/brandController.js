@@ -103,6 +103,63 @@ module.exports.updateBrandController = asyncHandler(async (req, res) => {
  * @method put
  * @access private (only admin)
 */
+module.exports.changeBrandImageController = asyncHandler(async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: "Product image is required" });
+    }
+
+    const imagePath = path.join(__dirname, `../image/${req.file.filename}`);
+
+    if (!req.body.ImageID) {
+        return res.status(400).json({ message: "Image id is required" });
+    }
+
+    if (req.params.id === undefined || req.params.id === "") {
+        return res.status(400).json({ message: "Product id is required" });
+    }
+
+    const checkBrand = await brandModel.checkBrand(req.params.id);
+    if (checkBrand.brandNotFound) {
+        return res.status(404).json({ message: "Brand not found" });
+    } else if (checkBrand.brandInOrder) {
+        try {
+
+            await cloudinaryRemoveImage(req.body.ImageID);
+
+            const imageResult = await cloudinaryUploadImage(imagePath);
+
+            const brand = {
+                id: req.params.id,
+                image: imageResult.imageResult.secure_url,
+                imageId: imageResult.public_id
+            }
+
+            const result = await brandModel.changeBrandImage(brand);
+
+            if (result.success) {
+                return res.status(200).json({message : "Brand Image updated successfully"});
+            } else {
+                return res.status(500).json({ message: "Internal server error" });
+            }
+
+
+        } catch (error) {
+            console.log("Error update product image: ", error);
+            return res.status(500).json({ message: error.message });
+        } finally {
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath);
+            }
+        }
+
+    } else {
+        if (fs.existsSync(imagePath)) {
+            fs.unlinkSync(imagePath);
+        }
+        return res.status(500).json({ message: "Internal server error" });
+    }
+
+});
 
 
 
