@@ -2,6 +2,7 @@ const express =  require('express');
 const bodyParser = require('body-parser');
 const { notFound, errorHandler } = require("./middlewares/error");
 const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
 
 dotenv.config();
 const app = express();
@@ -9,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
+app.use(cookieParser());  // This should be placed before any routes
 app.use(bodyParser.urlencoded({ extended: true }));
 
 

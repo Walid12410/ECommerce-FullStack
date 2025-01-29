@@ -7,7 +7,7 @@ function verifyToken(req, res, next) {
     if (token) {
         try {
             const decodedPayLoad = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = decodedPayLoad;
+            req.user = decodedPayLoad;  // Attach user info to the request object
             next();
         } catch (error) {
             return res.status(401).json({ message: "Invalid token, access denied" });
@@ -17,10 +17,11 @@ function verifyToken(req, res, next) {
     }
 }
 
+
 // Verify token and admin
 function verifyTokenAndAdmin(req, res, next) {
     verifyToken(req, res, () => {
-        if (req.user.isAdmin) {
+        if (req.user && req.user.isAdmin) {
             next();
         } else {
             return res.status(403).json({ message: "Not allowed, only admin" });

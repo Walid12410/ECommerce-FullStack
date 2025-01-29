@@ -16,6 +16,7 @@ const NavBar = () => {
                 <a href="#" className="font-semibold text-xl mr-1"> New & Featured </a>
                 <a href="#" className="font-semibold text-xl mr-1"> Men </a>
                 <a href="#" className="font-semibold text-xl mr-1"> Women </a>
+                <a href="#" className="font-semibold text-xl mr-1"> Categories </a>
                 <a href="#" className="font-semibold text-xl mr-1"> Brand </a>
                 <a href="#" className="font-semibold text-xl mr-1"> Stores </a>
             </div>
