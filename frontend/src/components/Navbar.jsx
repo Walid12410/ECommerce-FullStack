@@ -2,6 +2,7 @@ import Logo from "../assets/svg/nike.svg?react";
 import Search from "../assets/svg/search.svg?react";
 import Cart from "../assets/svg/cart.svg?react";
 import Favorite from "../assets/svg/favorite.svg?react";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
     return (
@@ -16,7 +17,7 @@ const NavBar = () => {
                 <a href="#" className="font-semibold text-xl mr-1"> New & Featured </a>
                 <a href="#" className="font-semibold text-xl mr-1"> Men </a>
                 <a href="#" className="font-semibold text-xl mr-1"> Women </a>
-                <a href="#" className="font-semibold text-xl mr-1"> Categories </a>
+                <Link to={"/category"} className="font-semibold text-xl mr-1"> Categories </Link>
                 <a href="#" className="font-semibold text-xl mr-1"> Brand </a>
                 <a href="#" className="font-semibold text-xl mr-1"> Stores </a>
             </div>
