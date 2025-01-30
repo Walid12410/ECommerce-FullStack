@@ -235,10 +235,7 @@ module.exports.updateProductImageController = asyncHandler(async (req, res) => {
         if (result.productNotFound) {
             return res.status(404).json({ message: "Product not found" });
         } else if (result.success) {
-            return res.status(200).json({
-                "message": "Product image updated successfully",
-                "productImage": product
-            });
+            return res.status(200).json({ message: "Product image updated successfully" });
         } else {
             return res.status(500).json({ message: "Internal server error" });
         }

@@ -38,6 +38,7 @@ app.use("/api/brand",require("./routes/brandRoute"));
 app.use("/api/color",require("./routes/colorRoute"));
 app.use("/api/gender",require("./routes/genderRoute"));
 app.use("/api/product",require("./routes/productRoute"));
+app.use("/api/banner",require("./routes/bannerRoute"));
 
 
 
