@@ -5,8 +5,8 @@ const { createNewBannerController,
     updateBannerImageController
 } = require("../controllers/bannerController");
 const { verifyTokenAndAdmin } = require("../middlewares/checkToken");
+const photoUpload = require("../middlewares/photoStorage");
 const router = require("express").Router();
-
 
 // api/banner
 router.route("/")
