@@ -1,9 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const { validationBanner } = require("../validators/bannerValidator");
 const bannerModel = require("../model/banner");
-const { cloudinaryRemoveImage } = require("../utils/cloudinary");
+const { cloudinaryRemoveImage, cloudinaryUploadImage } = require("../utils/cloudinary");
 const fs = require("fs");
 const moment = require('moment');
+const path = require("path");
 
 
 const isValidDateTime = (dateTimeString) => {
@@ -24,6 +25,8 @@ module.exports.createNewBannerController = asyncHandler(async (req, res) => {
     }
 
     const imagePath = path.join(__dirname, `../image/${req.file.filename}`);
+
+    console.log(imagePath);
 
     try {
         const { error } = validationBanner(req.body);
@@ -55,7 +58,7 @@ module.exports.createNewBannerController = asyncHandler(async (req, res) => {
         }
 
     } catch (error) {
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error " ,error });
     } finally {
         if (fs.existsSync(imagePath)) {
             fs.unlinkSync(imagePath);
@@ -72,9 +75,13 @@ module.exports.createNewBannerController = asyncHandler(async (req, res) => {
  * @access public
 */
 module.exports.getAllBannerController = asyncHandler(async (req, res) => {
-    const { currentTime } = req.query.currentTime;
+    const currentTime = req.query.time;
+
+    console.log(currentTime);
+
+
     if (!currentTime) {
-        return res.status(400).json({ message: "Current time is required" });
+        return res.status(400).json({ message: "currentTime is required" });
     }
 
     if (!isValidDateTime(currentTime)) {
@@ -131,6 +138,8 @@ module.exports.updateBannerController = asyncHandler(async (req, res) => {
  * @access private (only admin)
 */
 module.exports.deleteBannerController = asyncHandler(async (req, res) => {
+    const id = req.params.id;
+
     if (id === undefined || id === "") {
         return res.status(400).json({ message: "Banner id is required" });
     }

@@ -14,7 +14,7 @@ const NavBar = () => {
 
             {/** Middle section: Navigation Links */}
             <div className="hidden md:flex gap-4 pt-2 ">
-                <a href="#" className="font-semibold text-xl mr-1"> New & Featured </a>
+                <Link to={"/"} className="font-semibold text-xl mr-1"> New & Featured </Link>
                 <a href="#" className="font-semibold text-xl mr-1"> Men </a>
                 <a href="#" className="font-semibold text-xl mr-1"> Women </a>
                 <Link to={"/category"} className="font-semibold text-xl mr-1"> Categories </Link>

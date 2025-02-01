@@ -9,7 +9,7 @@ const bannerModel = {
             const result = await pool.request()
                 .input('CurrentTime', sql.DateTime, currentTime)
                 .query(`SELECT * FROM BannerVW WHERE
-                    StartDate <= @CurrentTime AND EndDate = @CurrentTime
+                    StartDate <= @CurrentTime AND EndDate >= @CurrentTime
                     AND IsActive = 1
                 `);
 
@@ -62,7 +62,7 @@ const bannerModel = {
                     END
                 `);
 
-            const status = result.recordset[0][0].Status;
+            const status = result.recordset[0].Status;
 
             if (status === 'subCategoryNotFound') return { subCategoryNotFound: true };
             if (status === 'success') return { success: true };
@@ -100,7 +100,7 @@ const bannerModel = {
                 END
             `);
 
-            const status = result.recordset[0][0].Status;
+            const status = result.recordset[0].Status;
 
             if (status === 'subCategoryNotFound') return { subCategoryNotFound: true };
             if (status === 'success') return { success: true };
@@ -134,7 +134,7 @@ const bannerModel = {
                 END
             `);
 
-            const status = result.recordset[0][0].Status;
+            const status = result.recordset[0].Status;
 
             if (status === 'notFound') return { notFound: true };
             if (status === 'success') return { success: true };
@@ -166,7 +166,7 @@ const bannerModel = {
                     END
                 `);
 
-            const status = result.recordset[0][0].Status;
+            const status = result.recordset[0].Status;
 
             if (status === 'notFound') return { notFound: true };
             if (status === 'success') return { success: true };
