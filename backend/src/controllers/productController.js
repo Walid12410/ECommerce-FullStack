@@ -6,7 +6,7 @@ const { validationCreateProduct,
 const { cloudinaryUploadImage, cloudinaryRemoveImage } = require("../utils/cloudinary");
 const productModel = require("../model/product");
 const fs = require("fs");
-
+const path = require("path");
 
 /**
  * @desc create product

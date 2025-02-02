@@ -77,9 +77,6 @@ module.exports.createNewBannerController = asyncHandler(async (req, res) => {
 module.exports.getAllBannerController = asyncHandler(async (req, res) => {
     const currentTime = req.query.time;
 
-    console.log(currentTime);
-
-
     if (!currentTime) {
         return res.status(400).json({ message: "currentTime is required" });
     }
@@ -100,6 +97,7 @@ module.exports.getAllBannerController = asyncHandler(async (req, res) => {
  * @access private (only admin)
 */
 module.exports.updateBannerController = asyncHandler(async (req, res) => {
+    const id = req.params.id;
 
     if (id === undefined || id === "") {
         return res.status(400).json({ message: "Product id is required" });

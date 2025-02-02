@@ -2,7 +2,8 @@ const asyncHandler = require("express-async-handler");
 const { validationBrand } = require("../validators/brandValidator");
 const brandModel = require("../model/brand");
 const { cloudinaryRemoveImage, cloudinaryUploadImage } = require("../utils/cloudinary");
-
+const path = require("path");
+const fs = require("fs");
 
 /**
  * @desc create brand
@@ -27,7 +28,7 @@ module.exports.createBrandController = asyncHandler(async (req, res) => {
 
         const brand = {
             name: req.body.BrandName,
-            image: imageResult.imageResult.secure_url,
+            image: imageResult.secure_url,
             imageId: imageResult.public_id
         }
 
@@ -172,6 +173,7 @@ module.exports.changeBrandImageController = asyncHandler(async (req, res) => {
  * @access private (only admin)
 */
 module.exports.deleteBrandController = asyncHandler(async (req, res) => {
+
     if (req.params.id === undefined || req.params.id === "") {
         return res.status(400).json({ message: "Product id is required" });
     }

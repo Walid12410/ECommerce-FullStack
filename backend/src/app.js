@@ -32,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/auth",require("./routes/authRoute"));
 app.use("/api/user",require("./routes/userRoute"));
 app.use("/api/auth-company",require("./routes/companyAuthRoute"));
+app.use("/api/company",require("./routes/companyRoute"));
 app.use("/api/category",require("./routes/categoryRoute"));
 app.use("/api/sub-category",require("./routes/subCategoryRoute"));
 app.use("/api/brand",require("./routes/brandRoute"));

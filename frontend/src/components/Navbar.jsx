@@ -24,7 +24,7 @@ const NavBar = () => {
 
             {/**Right section: Searh & Icons */}
             <div className="flex item-center gap-4 pt-2">
-                {/** Search */}
+                {/** Search */} 
                 <div className="flex items-center bg-white h-10 rounded-full">
                     <Search className='size-10 text-gray-400' />
                     <input type="text"
