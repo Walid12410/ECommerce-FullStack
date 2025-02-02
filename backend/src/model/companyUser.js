@@ -1,6 +1,5 @@
 const { sql, poolPromise } = require("../config/connectToDB");
 const bcrypt = require('bcrypt');
-const { getUserByEmail, getUserById } = require("./user");
 
 const companyUserModel = {
     async createUser(user) {
@@ -15,28 +14,28 @@ const companyUserModel = {
                 .input('Password', sql.NVarChar, hashedPassword)
                 .input('CompanyNo', sql.Int, user.CompanyNo)
                 .query(`
-                    IF EXISTS (SELECT * FROM CompanyUser WHERE Email = @Email)
+                    IF EXISTS (SELECT 1 FROM CompanyUser WHERE Email = @Email)
                     BEGIN
-                        SELECT 'emailExists' as Status
+                        SELECT 'exists' AS Status
                     END
-                    ELSE NOT EXISTS (SELECT 1 FROM Company WHERE CompanyNo = @CompanyNo)
+                    ELSE IF NOT EXISTS (SELECT 1 FROM Company WHERE CompanyNo = @CompanyNo)
                     BEGIN
-                        SELECT 'companyNotFound' as Status
+                        SELECT 'companyNotFound' AS Status
                     END
                     ELSE
                     BEGIN
                         INSERT INTO CompanyUser (FullName, Email, Password, CompanyNo)
                         VALUES (@FullName, @Email, @Password, @CompanyNo)
-                        SELECT 'success' as Status
+                        SELECT 'success' AS Status
                     END
                 `);
 
-            const status = result.recordsets[0][0].Status;
-            if (status === 'emailExists') return { emailExists: true };
+            const status = result.recordset[0].Status;
+            if (status === 'exists') return { exists: true };
             if (status === 'companyNotFound') return { companyNotFound: true };
             if (status === 'success') return { success: true };
 
-            throw new Error("Failed to create user");
+           // throw new Error("Failed to create user");
         } catch (error) {
             console.log("Falid to create user: ", error);
             throw error;
@@ -51,7 +50,7 @@ const companyUserModel = {
                 .input('Email', sql.NVarChar, email)
                 .query('SELECT * FROM CompanyUser WHERE Email = @Email');
 
-            return result.recordsets[0];
+            return result.recordset[0];
         } catch (error) {
             console.log("Falid to get user: ", error);
             throw error;
@@ -68,7 +67,7 @@ const companyUserModel = {
                     Password, CompanyNo FROM CompanyUser WHERE CompanyNo = @CompanyNo
                 `);
 
-            return result.recordsets[0];
+            return result.recordset[0];
         } catch (error) {
             console.log("Falid to get user: ", error);
             throw error;

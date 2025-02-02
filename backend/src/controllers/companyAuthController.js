@@ -2,6 +2,8 @@ const asyncHandler = require("express-async-handler");
 const { validationRegisterCompanyUser, validationLoginCompanyUser } = require("../validators/companyUserValidator");
 const companyUserModel = require("../model/companyUser");
 const { generateCompanyToken } = require("../middlewares/generateCompanyToken");
+const bcrypt = require('bcrypt');
+
 
 /**
  * @desc Create new company user
@@ -22,12 +24,13 @@ module.exports.createCompanyUserController = asyncHandler(async (req, res) => {
         CompanyNo: req.body.CompanyNo
     }
 
+
     const result = await companyUserModel.createUser(user);
 
-    if (result.emailExists) {
+    if (result.exists) {
         return res.status(400).json({ message: "Email already exists" });
     } else if (result.companyNotFound) {
-        return res.status(400).json({ message: "Company not found" });
+        return res.status(404).json({ message: "Company not found" });
     } else if (result.success) {
         return res.status(201).json({ message: "User created successfully" });
     } else {

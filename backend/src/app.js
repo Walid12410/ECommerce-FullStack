@@ -18,6 +18,7 @@ const corsOptions = {
   credentials: true,  // Allow credentials like cookies
 };
 
+
 // Use CORS middleware with the above options
 app.use(cors(corsOptions));
 
@@ -40,7 +41,6 @@ app.use("/api/color",require("./routes/colorRoute"));
 app.use("/api/gender",require("./routes/genderRoute"));
 app.use("/api/product",require("./routes/productRoute"));
 app.use("/api/banner",require("./routes/bannerRoute"));
-
 
 
 // Error Handler Middleware

@@ -2,7 +2,8 @@ const asyncHandler = require("express-async-handler");
 const validationCompany = require("../validators/companyValidator");
 const { cloudinaryUploadImage } = require("../utils/cloudinary");
 const companyModel = require("../model/company");
-
+const path = require("path");
+const fs = require("fs");
 
 /**
  * @desc create company
