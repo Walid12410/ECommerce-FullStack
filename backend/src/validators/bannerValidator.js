@@ -14,7 +14,16 @@ function validationBanner(obj) {
     return schema.validate(obj);
 }
 
+const validationUpdateImage = (data) => {
+    const schema = Joi.object({
+        ImagePublicID: Joi.string().required(),  // Ensure it's a string
+    });
+    return schema.validate(data);
+};
+
+
 
 module.exports = {
-    validationBanner
+    validationBanner,
+    validationUpdateImage
 }

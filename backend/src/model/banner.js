@@ -119,8 +119,8 @@ const bannerModel = {
 
             const result = await pool.request()
                 .input('BannerID', sql.Int, banner.BannerID)
-                .input('ImageURL', sql.Bit, banner.ImageURL)
-                .input('ImagePublicID', sql.Int, banner.ImagePublicID)
+                .input('ImageURL', sql.NVarChar, banner.ImageURL)
+                .input('ImagePublicID', sql.NVarChar, banner.ImagePublicID)
                 .query(`
                 IF NOT EXISTS (SELECT 1 FROM Banners WHERE BannerID = @BannerID)
                 BEGIN

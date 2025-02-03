@@ -4,6 +4,7 @@ import SignUpPage from "./pages/SignUpPage";
 import HomePage from "./pages/HomePage/HomePage";
 import CategoryPage from "./pages/CategoryPage";
 import NavBar from "./components/Navbar";
+import BrandPage from "./pages/BrandPage/BrandPage";
 
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/login" element={<LogInPage />} />
         <Route path="/register" element={<SignUpPage />} />
         <Route path="/category" element={<CategoryPage />} />
+        <Route path="/brand" element={<BrandPage />} />
 
       </Routes>
 

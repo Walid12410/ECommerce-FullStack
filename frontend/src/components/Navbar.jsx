@@ -18,7 +18,7 @@ const NavBar = () => {
                 <a href="#" className="font-semibold text-xl mr-1"> Men </a>
                 <a href="#" className="font-semibold text-xl mr-1"> Women </a>
                 <Link to={"/category"} className="font-semibold text-xl mr-1"> Categories </Link>
-                <a href="#" className="font-semibold text-xl mr-1"> Brand </a>
+                <Link to={"/brand"} className="font-semibold text-xl mr-1"> Brand </Link>
                 <a href="#" className="font-semibold text-xl mr-1"> Stores </a>
             </div>
 

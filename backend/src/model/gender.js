@@ -16,19 +16,21 @@ const genderModel = {
         }
     },
 
-    async createGender(name) {
+    async createGender(data) {
         try {
             const pool = await poolPromise();
 
             const result = await pool.request()
-                .input("Gender", sql.NVarChar, name)
+                .input("Gender", sql.NVarChar, data.name)
+                .input("ImageURL",sql.NVarChar,data.imageUrl)
+                .input("ImagePublicID",sql.NVarChar,data.imageId)
                 .query(`
                     IF EXISTS (SELECT * FROM Gender WHERE Gender= @Gender)
                     BEGIN
                         SELECT 'exists' AS Status
                     END
                     ELSE BEGIN
-                        INSERT INTO Gender (Gender) VALUES (@Gender)
+                        INSERT INTO Gender (Gender, ImageURL, ImagePublicID) VALUES (@Gender, @ImageURL, ImagePublicID)
 
                         SELECT 'success' AS Status
                 `);

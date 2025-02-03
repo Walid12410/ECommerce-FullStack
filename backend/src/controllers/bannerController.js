@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { validationBanner } = require("../validators/bannerValidator");
+const { validationBanner, validationUpdateImage } = require("../validators/bannerValidator");
 const bannerModel = require("../model/banner");
 const { cloudinaryRemoveImage, cloudinaryUploadImage } = require("../utils/cloudinary");
 const fs = require("fs");
@@ -26,7 +26,6 @@ module.exports.createNewBannerController = asyncHandler(async (req, res) => {
 
     const imagePath = path.join(__dirname, `../image/${req.file.filename}`);
 
-    console.log(imagePath);
 
     try {
         const { error } = validationBanner(req.body);
@@ -175,9 +174,8 @@ module.exports.updateBannerImageController = asyncHandler(async (req, res) => {
     const imagePath = path.join(__dirname, `../image/${req.file.filename}`);
 
     try {
-        const { error } = validationUpdateImage(req.body);
-        if (error) {
-            return res.status(400).json({ message: error.details[0].message });
+        if(!req.body.ImagePublicID){
+            return res.status(400).json({message : "ImagePublicID is required"});
         }
 
         if (req.params.id === undefined || req.params.id === "") {
@@ -210,7 +208,7 @@ module.exports.updateBannerImageController = asyncHandler(async (req, res) => {
 
     } catch (error) {
         console.log("Error update banner image: ", error);
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error });
     } finally {
         if (fs.existsSync(imagePath)) {
             fs.unlinkSync(imagePath);
