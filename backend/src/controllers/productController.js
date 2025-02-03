@@ -30,7 +30,7 @@ module.exports.createProductController = asyncHandler(async (req, res) => {
         const imageResult = await cloudinaryUploadImage(imagePath);
 
         const product = {
-            CompanyNo: req.user.CompanyNo,
+            CompanyNo: req.user.companyNo,
             ProductName: req.body.ProductName,
             ProductDesc: req.body.ProductDesc,
             Price: req.body.Price,
@@ -188,7 +188,6 @@ module.exports.updateProductController = asyncHandler(async (req, res) => {
         default:
             return res.status(500).json({ message: "Failed to update product" });
     }
-
 });
 
 

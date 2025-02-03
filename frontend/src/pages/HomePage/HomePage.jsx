@@ -1,17 +1,22 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getBanner } from "../redux/slices/bannerSlice";
-import BannerCard from "../components/BannerCard";
-import { ChevronLeft, ChevronRight } from "lucide-react"; // Importing icons
+import { getBanner } from "../../redux/slices/bannerSlice";
+import BannerCard from "../../components/BannerCard";
+import { getProduct } from "../../redux/slices/productSlice";
+import LatestProduct from "./Details/LatestProduct";
 
 const HomePage = () => {
+
     const dispatch = useDispatch();
     const { banners, loadingBanners, errorBanners } = useSelector((state) => state.banner);
+    const { latestProduct, loadingLatestProduct, errorLatestProduct } = useSelector((state) => state.product);
 
     useEffect(() => {
         dispatch(getBanner());
+        dispatch(getProduct({ page: 1, limit: 5 }));
     }, [dispatch]);
 
+    
     return (
         <div className="flex flex-col items-center m-5">
             {banners.length === 0 ? (
@@ -22,19 +27,11 @@ const HomePage = () => {
                 <div className=""></div>
             )}
 
-
-            <div className="w-full flex justify-between items-center mt-5">
-                <div className="text-sm font-bold">Latest Drop</div>
-
-                {/* Shop Section with Icons */}
-                <div className="flex items-center gap-2">
-                    <ChevronLeft size={20} className="cursor-pointer" />
-                    <div className="text-sm font-bold ">Shop</div>
-                    <ChevronRight size={20} className="cursor-pointer" />
-                </div>
-            </div>
-
-
+            {latestProduct.length === 0 ? (
+                <div className=""></div>
+            ): (
+                <LatestProduct products={latestProduct}/>
+            )}
 
             {banners.length === 0 ? (
                 <div></div>
@@ -43,7 +40,7 @@ const HomePage = () => {
             ) : (
                 <div className=""></div>
             )}
-        </div>  
+        </div>
     );
 };
 
