@@ -6,7 +6,7 @@ const ProductCard = ({ product }) => {
       <img
         src={product?.ProductImage}
         alt={product?.ProductNo}
-        className="w-96 h-72 object-cover rounded-lg"
+        className="w-90 h-90 object-fill rounded-lg cursor-pointer"
       />
       <div className="flex justify-between items-center mt-2">
         <div className="text-sm font-bold">{product?.ProductName}</div>

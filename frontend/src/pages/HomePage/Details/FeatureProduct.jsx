@@ -2,7 +2,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"; // Importing icons
 import { useRef } from "react";
 import ProductCard from "../../../components/ProductCard";
 
-const LatestProduct = ({ products }) => {
+const FeatureProduct = ({ products }) => {
   const scrollRef = useRef(null);
 
   // Scroll left
@@ -19,7 +19,7 @@ const LatestProduct = ({ products }) => {
     <div className="w-full px-4">
       {/** Header section */}
       <div className="flex justify-between items-center mt-5">
-        <h2 className="text-lg font-bold">Latest Drop</h2>
+        <h2 className="text-lg font-bold">Feature Product</h2>
 
         {/** Chevron Icons */}
         <div className="flex items-center gap-2">
@@ -36,16 +36,23 @@ const LatestProduct = ({ products }) => {
       {/** Scrollable products list */}
       <div className="relative">
         <div
-          ref={scrollRef} // 👈 Fix: Added reference here
+          ref={scrollRef} 
           className="flex overflow-x-auto gap-4 mt-3 mb-6 scrollbar-hide scroll-smooth flex-nowrap"
         >
-          {products.map((product) => (
-            <ProductCard product={product}/>
+          {products.map((product, index) => (
+            <ProductCard key={index} product={product} />
           ))}
+
+          {/** More Products button when length is 5 or greater */}
+          {products.length >= 5 && (
+            <button className="w-28 h-16 btn btn-neutral btn-active">
+              More Products →
+            </button>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default LatestProduct;
+export default FeatureProduct;

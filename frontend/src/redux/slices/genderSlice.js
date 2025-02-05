@@ -21,13 +21,8 @@ const genderSlice = createSlice({
         gender: [],
         loadingGender: false,
         errorGender: null,
-        selectedGenders: [], // Change from an object to an array
     },
-    reducers: {
-        setSelectedGenders: (state, action) => {
-            state.selectedGenders = action.payload; // Set selected gender IDs array
-        }
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(getGender.pending, (state) => {
@@ -45,5 +40,4 @@ const genderSlice = createSlice({
     }
 });
 
-export const { setSelectedGenders } = genderSlice.actions;
 export default genderSlice.reducer;

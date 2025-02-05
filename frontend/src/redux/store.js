@@ -4,6 +4,7 @@ import genderReducer from "./slices/genderSlice";
 import bannerReducer from "./slices/bannerSlice";
 import productReducer from "./slices/productSlice";
 import brandReducer from "./slices/brandSlice";
+import featureReducer from "./slices/featureSlice";
 
 const store = configureStore({
     reducer : {
@@ -11,7 +12,8 @@ const store = configureStore({
         gender : genderReducer,
         banner: bannerReducer,
         product : productReducer,
-        brand : brandReducer
+        brand : brandReducer,
+        feature : featureReducer
     }
 });
 

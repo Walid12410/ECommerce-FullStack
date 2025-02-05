@@ -6,6 +6,8 @@ import { getProduct } from "../../redux/slices/productSlice";
 import LatestProduct from "./Details/LatestProduct";
 import { getGender } from "../../redux/slices/genderSlice";
 import Essentails from "./Details/Essentials";
+import { getFeature } from "../../redux/slices/featureSlice";
+import FeatureProduct from "./Details/FeatureProduct";
 
 const HomePage = () => {
 
@@ -13,11 +15,13 @@ const HomePage = () => {
     const { banners, loadingBanners, errorBanners } = useSelector((state) => state.banner);
     const { latestProduct, loadingLatestProduct, errorLatestProduct } = useSelector((state) => state.product);
     const { gender, loadingGender, errorGender, selectedGenders } = useSelector((state) => state.gender);
+    const { feature, loadingFeature, errorFeature } = useSelector((state) => state.feature);
 
     useEffect(() => {
         dispatch(getBanner());
         dispatch(getProduct({ page: 1, limit: 5 }));
         dispatch(getGender());
+        dispatch(getFeature({ page: 1, limit: 5 }));
     }, [dispatch]);
 
 
@@ -45,7 +49,11 @@ const HomePage = () => {
                 <div className=""></div>
             )}
 
-            <h1 className="mt-20 mb-20 text-4xl">TODO: Feature product</h1>
+            {feature.length === 0 ? (
+                <div className=""></div>
+            ) : (
+                <FeatureProduct products={feature} />
+            )}
 
             {banners.length === 0 ? (
                 <div></div>
@@ -58,7 +66,7 @@ const HomePage = () => {
             {gender.length === 0 ? (
                 <div className=""></div>
             ) : (
-                <Essentails gender={gender}/>
+                <Essentails gender={gender} />
             )}
         </div>
     );
