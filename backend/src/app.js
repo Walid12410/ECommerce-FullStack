@@ -29,7 +29,7 @@ app.use(cookieParser());  // This should be placed before any routes
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-// Routesa
+// Routes
 app.use("/api/auth",require("./routes/authRoute"));
 app.use("/api/user",require("./routes/userRoute"));
 app.use("/api/auth-company",require("./routes/companyAuthRoute"));
@@ -41,6 +41,7 @@ app.use("/api/color",require("./routes/colorRoute"));
 app.use("/api/gender",require("./routes/genderRoute"));
 app.use("/api/product",require("./routes/productRoute"));
 app.use("/api/banner",require("./routes/bannerRoute"));
+app.use("/api/feature",require("./routes/featureRoute"));
 
 
 // Error Handler Middleware
