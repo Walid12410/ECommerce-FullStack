@@ -5,23 +5,21 @@ import HomePage from "./pages/HomePage/HomePage";
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import NavBar from "./components/Navbar";
 import BrandPage from "./pages/BrandPage/BrandPage";
+import ProductGenderPage from "./pages/ProductGenderPage/ProductGenderPage";
 
 
 const App = () => {
   return (
-    <div data-theme={"dark"}>
-      <NavBar/>
+    <div data-theme={"dark"} className="min-h-screen bg-base-100">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LogInPage />} />
         <Route path="/register" element={<SignUpPage />} />
         <Route path="/category" element={<CategoryPage />} />
         <Route path="/brand" element={<BrandPage />} />
-
+        <Route path="/collection/:id" element={<ProductGenderPage />} />
       </Routes>
-
     </div>
-
   );
 }
 

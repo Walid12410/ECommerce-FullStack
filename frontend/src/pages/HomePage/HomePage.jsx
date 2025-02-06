@@ -5,16 +5,17 @@ import BannerCard from "../../components/BannerCard";
 import { getProduct } from "../../redux/slices/productSlice";
 import LatestProduct from "./Details/LatestProduct";
 import { getGender } from "../../redux/slices/genderSlice";
-import Essentails from "./Details/Essentials";
+import Essentails from "../../components/Essentials";
 import { getFeature } from "../../redux/slices/featureSlice";
 import FeatureProduct from "./Details/FeatureProduct";
+import { Loader2 } from "lucide-react";
 
 const HomePage = () => {
 
     const dispatch = useDispatch();
     const { banners, loadingBanners, errorBanners } = useSelector((state) => state.banner);
     const { latestProduct, loadingLatestProduct, errorLatestProduct } = useSelector((state) => state.product);
-    const { gender, loadingGender, errorGender, selectedGenders } = useSelector((state) => state.gender);
+    const { gender, loadingGender, errorGender } = useSelector((state) => state.gender);
     const { feature, loadingFeature, errorFeature } = useSelector((state) => state.feature);
 
     useEffect(() => {
@@ -24,6 +25,14 @@ const HomePage = () => {
         dispatch(getFeature({ page: 1, limit: 5 }));
     }, [dispatch]);
 
+
+    if (loadingBanners && loadingLatestProduct && loadingGender && loadingFeature) {
+        return (
+            <div className="flex justify-center items-center h-full">
+                <Loader2 className="h-12 w-12 animate-spin" /> {/* Loading spinner */}
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col items-center m-5">

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchProduct, fetchSubCategoryProduct } from '../../api/productApi';
+import { fetchGenderProduct, fetchProduct, fetchSubCategoryProduct } from '../../api/productApi';
 
 
 export const getProduct = createAsyncThunk(
@@ -20,9 +20,9 @@ export const getSubCategoryProduct = createAsyncThunk(
     async ({ subCategoryID, page, limit }, { rejectWithValue }) => {
         try {
             let data;
-            if(subCategoryID === null){
-                 data = await fetchProduct(page, limit);
-            }else{
+            if (subCategoryID === null) {
+                data = await fetchProduct(page, limit);
+            } else {
                 data = await fetchSubCategoryProduct(subCategoryID, page, limit);
             }
             return data;
@@ -33,7 +33,23 @@ export const getSubCategoryProduct = createAsyncThunk(
     }
 );
 
-
+export const getGenderProduct = createAsyncThunk(
+    "product/fetchGenderProduct",
+    async ({ genderNo, page, limit }, { rejectWithValue }) => {
+        try {
+            let data;
+            if (genderNo === null) {
+                data = await fetchProduct(page, limit);
+            } else {
+                data = await fetchGenderProduct(genderNo, page, limit);
+            }
+            return data;
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Error fetching data");
+            return rejectWithValue(error.response?.data?.message || "Error fetching data");
+        }
+    }
+);
 
 const productSlice = createSlice({
     name: "product",
@@ -46,12 +62,21 @@ const productSlice = createSlice({
         subCategoryProduct: [],
         loadingSubCategoryProduct: false,
         errorSubCategoryProduct: null,
-        hasMoreDataSubCategory: true
+        hasMoreDataSubCategory: true,
+        // gender product
+        genderProduct: [],
+        loadingGenderProduct: false,
+        errorGenderProduct: false,
+        hasMoreDataGenderProduct: true
     },
     reducers: {
         clearSubCategoryProduct: (state) => {
             state.subCategoryProduct = [];
             state.hasMoreDataSubCategory = true;
+        },
+        clearGenderProduct: (state) => {
+            state.genderProduct = [];
+            state.hasMoreDataGenderProduct = true;
         }
     },
     extraReducers: (builder) => {
@@ -76,7 +101,7 @@ const productSlice = createSlice({
             })
             .addCase(getSubCategoryProduct.fulfilled, (state, action) => {
                 state.loadingSubCategoryProduct = false;
-            
+
                 if (action.payload.length === 0) {
                     state.hasMoreDataSubCategory = false; // No more data to load
                 } else {
@@ -86,7 +111,7 @@ const productSlice = createSlice({
                             (existingProduct) => existingProduct.ProductNo === newProduct.ProductNo
                         )
                     );
-            
+
                     // Add only non-duplicate products to the state
                     state.subCategoryProduct = [...state.subCategoryProduct, ...newProducts];
                 }
@@ -95,8 +120,35 @@ const productSlice = createSlice({
                 state.loadingSubCategoryProduct = false;
                 state.errorSubCategoryProduct = action.payload || "Failed to fetch product";
             });
+        // Gender product
+        builder
+            .addCase(getGenderProduct.pending, (state) => {
+                state.loadingGenderProduct = true;
+                state.errorGenderProduct = null;
+            })
+            .addCase(getGenderProduct.fulfilled, (state, action) => {
+                state.loadingGenderProduct = false;
+
+                if (action.payload.length === 0) {
+                    state.hasMoreDataGenderProduct = false; // No more data to load
+                } else {
+                    // Filter out duplicates based on ProductNo
+                    const newProducts = action.payload.filter(
+                        (newProduct) => !state.genderProduct.some(
+                            (existingProduct) => existingProduct.ProductNo === newProduct.ProductNo
+                        )
+                    );
+
+                    // Add only non-duplicate products to the state
+                    state.genderProduct = [...state.genderProduct, ...newProducts];
+                }
+            })
+            .addCase(getGenderProduct.rejected, (state, action) => {
+                state.loadingGenderProduct = false;
+                state.errorGenderProduct = action.payload || "Failed to fetch product";
+            })
     }
 });
 
-export const { clearSubCategoryProduct } = productSlice.actions;
+export const { clearSubCategoryProduct,clearGenderProduct } = productSlice.actions;
 export default productSlice.reducer;

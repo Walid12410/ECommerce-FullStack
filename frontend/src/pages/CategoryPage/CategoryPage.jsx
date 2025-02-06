@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { debounce } from "lodash";
 import { getCategory } from "../../redux/slices/categorySlice";
 import { clearSubCategoryProduct, getSubCategoryProduct } from "../../redux/slices/productSlice";
-import SubCategoryProductCard from "../../components/SubCategoryProductCard";
 import CategoriesSidebar from "../../components/CategorySideBar";
 import { Loader2, Package } from "lucide-react"; // Import icons
+import CollectionProductCard from "../../components/CollectionCard";
 
 const CategoryPage = () => {
     const dispatch = useDispatch();
@@ -21,13 +21,13 @@ const CategoryPage = () => {
     // Initial data fetch
     useEffect(() => {
         dispatch(getCategory());
-        dispatch(getSubCategoryProduct({ subCategoryID: null, page: 1, limit: 10 }));
+        dispatch(getSubCategoryProduct({ subCategoryID: null, page: 1, limit: 9 }));
     }, [dispatch]);
 
     // Fetch more products when the page changes
     useEffect(() => {
         if (page > 1) {
-            dispatch(getSubCategoryProduct({ subCategoryID: selectedSubCategory, page: page, limit: 10 }));
+            dispatch(getSubCategoryProduct({ subCategoryID: selectedSubCategory, page: page, limit: 9 }));
         }
     }, [page, selectedSubCategory, dispatch]);
 
@@ -36,7 +36,7 @@ const CategoryPage = () => {
         dispatch(clearSubCategoryProduct());
         setSelectedSubCategory(subCategoryId);
         setPage(1);
-        dispatch(getSubCategoryProduct({ subCategoryID: subCategoryId, page: 1, limit: 10 }));
+        dispatch(getSubCategoryProduct({ subCategoryID: subCategoryId, page: 1, limit: 9 }));
     };
 
     // Infinite scroll handler with debouncing
@@ -55,7 +55,7 @@ const CategoryPage = () => {
         dispatch(clearSubCategoryProduct());
         setSelectedSubCategory(null);
         setPage(1);
-        dispatch(getSubCategoryProduct({ subCategoryID: null, page: 1, limit: 10 }));
+        dispatch(getSubCategoryProduct({ subCategoryID: null, page: 1, limit: 9 }));
     };
 
     return (
@@ -84,7 +84,7 @@ const CategoryPage = () => {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
                         {subCategoryProduct.map((product) => (
-                            <SubCategoryProductCard key={product.ProductNo} product={product} />
+                            <CollectionProductCard  product={product} />
                         ))}
                     </div>
                 )}
