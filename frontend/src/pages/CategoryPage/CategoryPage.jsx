@@ -6,6 +6,7 @@ import { clearSubCategoryProduct, getSubCategoryProduct } from "../../redux/slic
 import CategoriesSidebar from "../../components/CategorySideBar";
 import { Loader2, Package } from "lucide-react"; // Import icons
 import CollectionProductCard from "../../components/CollectionCard";
+import NavBar from "../../components/Navbar";
 
 const CategoryPage = () => {
     const dispatch = useDispatch();
@@ -59,7 +60,8 @@ const CategoryPage = () => {
     };
 
     return (
-        <div className="flex overflow-y-auto">
+        <div className="flex flex-col h-full">
+            <NavBar />
             {/* Sidebar for categories */}
             <CategoriesSidebar
                 categories={categories}
@@ -69,7 +71,7 @@ const CategoryPage = () => {
             />
 
             {/* Main Product List Section */}
-            <div className="flex-1 md:ml-48 p-4 overflow-y-auto h-screen scrollbar-hide" onScroll={handleScroll}>
+            <div className="flex-1 md:ml-48 p-4  scrollbar-hide" onScroll={handleScroll}>
                 {loadingSubCategoryProduct && page === 1 ? (
                     <div className="flex justify-center items-center h-full">
                         <Loader2 className="h-12 w-12 animate-spin" /> {/* Loading spinner */}

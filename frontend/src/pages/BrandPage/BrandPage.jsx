@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBrand } from "../../redux/slices/brandSlice";
+import NavBar from "../../components/Navbar";
 
 const BrandPage = () => {
   const dispatch = useDispatch();
@@ -11,24 +12,29 @@ const BrandPage = () => {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-wrap gap-3 m-5 justify-center">
-      {/* Show a message or loading state when brands array is empty */}
-      {brands.length === 0 ? (
-        <div className="w-full text-center">No Brands Available</div>
-      ) : (
-        brands.map((brand) => (
-          <div
-            key={brand?.BrandID}
-            className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 h-64" // Adjusted responsive widths
-          >
-            <img
-              src={brand?.BrandImage}
-              alt={brand?.BrandID}
-              className="object-fill rounded-lg w-full h-full cursor-pointer" // Image scaling and cover
-            />
-          </div>
-        ))
-      )}
+    <div className="flex flex-col h-full">
+      <NavBar />
+
+      {/* Brand Container */}
+      <div className="flex flex-wrap gap-4 m-5 justify-center">
+        {/* Show a message or loading state when brands array is empty */}
+        {brands.length === 0 ? (
+          <div className="w-full text-center text-lg font-semibold">No Brands Available</div>
+        ) : (
+          brands.map((brand) => (
+            <div
+              key={brand?.BrandID}
+              className="w-32 sm:w-40 md:w-48 lg:w-56 xl:w-64 h-56 flex items-center justify-center" // Responsive sizing
+            >
+              <img
+                src={brand?.BrandImage}
+                alt={brand?.BrandName}
+                className="w-full h-full object-contain rounded-lg shadow-md cursor-pointer hover:scale-105 transition"
+              />
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };

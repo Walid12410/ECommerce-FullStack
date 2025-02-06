@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Essentails = ({ gender }) => {
     return (
-        <div className="w-full px-4">
+        <div className="w-full px-4 p-10">
             {/** Header section */}
             <h2 className="text-lg font-bold mb-5">The Essentials</h2>
 

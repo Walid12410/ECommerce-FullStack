@@ -5,10 +5,11 @@ import BannerCard from "../../components/BannerCard";
 import { getProduct } from "../../redux/slices/productSlice";
 import LatestProduct from "./Details/LatestProduct";
 import { getGender } from "../../redux/slices/genderSlice";
-import Essentails from "../../components/Essentials";
+import Essentails from "./Details/Essentials";
 import { getFeature } from "../../redux/slices/featureSlice";
 import FeatureProduct from "./Details/FeatureProduct";
 import { Loader2 } from "lucide-react";
+import NavBar from "../../components/Navbar";
 
 const HomePage = () => {
 
@@ -35,7 +36,8 @@ const HomePage = () => {
     }
 
     return (
-        <div className="flex flex-col items-center m-5">
+        <div className="flex flex-col h-full">
+            <NavBar />
             {banners.length === 0 ? (
                 <div></div>
             ) : banners.length >= 1 ? (

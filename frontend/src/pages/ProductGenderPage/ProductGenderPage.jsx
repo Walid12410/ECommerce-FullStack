@@ -66,7 +66,7 @@ const ProductGenderPage = () => {
     }
 
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col h-full ">
             <NavBar />
             {/** Gender Selection Bar - Horizontal on Mobile, Vertical on Desktop */}
             <div className="md:flex">

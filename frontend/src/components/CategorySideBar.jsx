@@ -4,7 +4,7 @@ const CategoriesSidebar = ({ categories, loadingCategory, handleProductShow, han
     const [isMenuOpen, setIsMenuOpen] = useState(false); // State to control menu visibility
 
     return (
-        <div className={`flex-none w-48 fixed h-screen p-4 overflow-x-auto  z-50 ${isMenuOpen ? "bg-white" : ""}`}>
+        <div className={`flex-col w-48 fixed h-screen p-4 pt-20 overflow-x-auto scrollbar-hide z-50 ${isMenuOpen ? "bg-white" : ""}`}>
             {/* Mobile Menu Button */}
             <div className="md:hidden">
                 <button

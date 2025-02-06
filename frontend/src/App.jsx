@@ -10,7 +10,7 @@ import ProductGenderPage from "./pages/ProductGenderPage/ProductGenderPage";
 
 const App = () => {
   return (
-    <div data-theme={"dark"} className="min-h-screen bg-base-100">
+    <div data-theme={"dark"} >
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LogInPage />} />

@@ -1,6 +1,6 @@
 const BannerCard = ({ banners }) => {
     return (
-        <div className="w-full overflow-hidden px-4">
+        <div className="w-full flex-col px-4">
             <div className="w-full h-[300px] sm:h-[500px] md:h-[700px] lg:h-[700px] xl:h-[700px]">
                 <img src={banners?.ImageURL} alt={banners[0]?.Title}
                     className="object-fill h-full w-full"
