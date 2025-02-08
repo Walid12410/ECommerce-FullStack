@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBrand } from "../../redux/slices/brandSlice";
 import NavBar from "../../components/Navbar";
+import { Link } from "react-router-dom";
 
 const BrandPage = () => {
   const dispatch = useDispatch();
@@ -22,16 +23,18 @@ const BrandPage = () => {
           <div className="w-full text-center text-lg font-semibold">No Brands Available</div>
         ) : (
           brands.map((brand) => (
-            <div
+            <Link
+              to={`/brand/${brand?.BrandID}`} 
+              state={{ brand }}
               key={brand?.BrandID}
               className="w-32 sm:w-40 md:w-48 lg:w-56 xl:w-64 h-56 flex items-center justify-center" // Responsive sizing
             >
               <img
                 src={brand?.BrandImage}
                 alt={brand?.BrandName}
-                className="w-full h-full object-contain rounded-lg shadow-md cursor-pointer hover:scale-105 transition"
+                className="w-full h-full object-fill rounded-lg shadow-md cursor-pointer hover:scale-105 transition"
               />
-            </div>
+            </Link>
           ))
         )}
       </div>

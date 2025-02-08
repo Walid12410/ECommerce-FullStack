@@ -17,3 +17,9 @@ export const fetchGenderProduct = async(genderNo,page,limit)=> {
     const response = await request.get(`/api/product?page=${page}&limit=${limit}&GenderNo=${genderNo}`);
     return response.data;
 }
+
+
+export const fetchBrandProduct = async(brandNo,page,limit)=> {
+    const response = await request.get(`/api/product?page=${page}&limit=${limit}&BrandNo=${brandNo}`);
+    return response.data;
+}

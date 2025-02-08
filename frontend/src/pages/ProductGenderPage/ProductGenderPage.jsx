@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getGender } from "../../redux/slices/genderSlice";
 import { debounce } from "lodash";
@@ -7,7 +7,6 @@ import { Loader2, Package } from "lucide-react";
 import CollectionProductCard from "../../components/CollectionCard";
 import { useParams } from "react-router-dom";
 import NavBar from "../../components/Navbar";
-
 
 const ProductGenderPage = () => {
     const dispatch = useDispatch();
@@ -18,44 +17,53 @@ const ProductGenderPage = () => {
     const [selectedGender, setSelectedGender] = useState(id != 0 ? id : null);
     const [page, setPage] = useState(1);
 
+    // Run only once on mount
     useEffect(() => {
         dispatch(clearGenderProduct());
         dispatch(getGender());
     }, [dispatch]);
 
+    // Fetch products when gender changes
     useEffect(() => {
-        dispatch(getGenderProduct({ genderNo: selectedGender, page: page, limit: 9 }));
-    }, [dispatch, selectedGender, page]);
-
-    const handleGenderClick = (id) => {
-        dispatch(clearGenderProduct());
-        setSelectedGender(id);
         setPage(1);
-        dispatch(getGenderProduct({ genderNo: id, page: 1, limit: 9 }));
-    };
+        dispatch(clearGenderProduct());
+        dispatch(getGenderProduct({ genderNo: selectedGender, page: 1, limit: 9 }));
+    }, [selectedGender, dispatch]);
 
+    // Fetch next page when `page` changes
     useEffect(() => {
         if (page > 1) {
-            dispatch(getGenderProduct({ genderNo: selectedGender, page: page, limit: 9 }));
+            dispatch(getGenderProduct({ genderNo: selectedGender, page, limit: 9 }));
         }
-    }, [page, selectedGender, dispatch]);
+    }, [page, dispatch]);
 
-    const handleScroll = debounce((e) => {
-        if (
-            e.target.scrollHeight - e.target.scrollTop <= e.target.clientHeight + 10 &&
-            hasMoreDataGenderProduct &&
-            !loadingGenderProduct
-        ) {
-            setPage((prevPage) => prevPage + 1);
-        }
-    }, 200);
-
-    const handleProductShow = () => {
-        dispatch(clearGenderProduct());
-        setSelectedGender(null);
-        setPage(1);
-        dispatch(getGenderProduct({ genderNo: null, page: 1, limit: 9 }));
+    // Handle gender selection
+    const handleGenderClick = (id) => {
+        setSelectedGender(id);
     };
+
+    // Show all products
+    const handleProductShow = () => {
+        setSelectedGender(null);
+    };
+
+    // Infinite Scroll Handler
+    const scrollHandler = useRef(
+        debounce(() => {
+            if (
+                window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 &&
+                hasMoreDataGenderProduct &&
+                !loadingGenderProduct
+            ) {
+                setPage((prevPage) => prevPage + 1);
+            }
+        }, 200)
+    ).current;
+
+    useEffect(() => {
+        window.addEventListener("scroll", scrollHandler);
+        return () => window.removeEventListener("scroll", scrollHandler);
+    }, []);
 
     if (loadingGender) {
         return (
@@ -66,34 +74,29 @@ const ProductGenderPage = () => {
     }
 
     return (
-        <div className="flex flex-col h-full ">
+        <div className="flex flex-col h-full">
             <NavBar />
-            {/** Gender Selection Bar - Horizontal on Mobile, Vertical on Desktop */}
+
+            {/* Gender Selection */}
             <div className="md:flex">
                 <div className="p-4 bg-base-100">
                     <p className="text-xl font-bold mb-2">Gender</p>
-                    <div className="flex flex-row md:flex-col  gap-3 overflow-x-auto">
-                        {/** "All" Category */}
+                    <div className="flex flex-row md:flex-col gap-3 overflow-x-auto">
+                        {/* "All" Category */}
                         <div
                             className={`w-16 h-16 rounded-full border-2 flex items-center justify-center text-sm font-bold cursor-pointer 
-                            ${selectedGender === null
-                                    ? "bg-primary text-primary-content border-primary"
-                                    : "border-base-300 hover:bg-base-200"
-                                }`}
+                            ${selectedGender === null ? "bg-primary text-primary-content border-primary" : "border-base-300 hover:bg-base-200"}`}
                             onClick={handleProductShow}
                         >
                             All
                         </div>
 
-                        {/** Gender List */}
+                        {/* Gender List */}
                         {gender.map((g) => (
                             <div
                                 key={g.GenderID}
                                 className={`w-16 h-16 rounded-full border-2 flex items-center justify-center text-sm font-bold cursor-pointer transition
-                                ${selectedGender === g.GenderID
-                                        ? "bg-primary text-primary-content border-primary"
-                                        : "border-base-300 hover:bg-base-200"
-                                    }`}
+                                ${selectedGender === g.GenderID ? "bg-primary text-primary-content border-primary" : "border-base-300 hover:bg-base-200"}`}
                                 onClick={() => handleGenderClick(g.GenderID)}
                             >
                                 {g.Gender}
@@ -102,8 +105,8 @@ const ProductGenderPage = () => {
                     </div>
                 </div>
 
-                {/** Product List */}
-                <div className="flex-1 overflow-y-auto scrollbar-hide" onScroll={handleScroll}>
+                {/* Product List */}
+                <div className="flex-1 overflow-y-auto scrollbar-hide">
                     {loadingGenderProduct && page === 1 ? (
                         <div className="flex justify-center items-center h-full">
                             <Loader2 className="h-12 w-12 animate-spin" />
@@ -128,7 +131,6 @@ const ProductGenderPage = () => {
                         </div>
                     )}
                 </div>
-
             </div>
         </div>
     );

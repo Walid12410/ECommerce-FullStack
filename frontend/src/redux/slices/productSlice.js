@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchGenderProduct, fetchProduct, fetchSubCategoryProduct } from '../../api/productApi';
+import { fetchBrandProduct, fetchGenderProduct, fetchProduct, fetchSubCategoryProduct } from '../../api/productApi';
 
 
 export const getProduct = createAsyncThunk(
@@ -51,6 +51,20 @@ export const getGenderProduct = createAsyncThunk(
     }
 );
 
+export const getBrandProduct = createAsyncThunk(
+    "product/fetchBrandProduct",
+    async ({ brandId, page, limit }, { rejectWithValue }) => {
+        try {
+            const data = await fetchBrandProduct(brandId, page, limit);
+            return data;
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Error fetching data");
+            return rejectWithValue(error.response?.data?.message || "Error fetching data");
+        }
+    }
+);
+
+
 const productSlice = createSlice({
     name: "product",
     initialState: {
@@ -66,8 +80,13 @@ const productSlice = createSlice({
         // gender product
         genderProduct: [],
         loadingGenderProduct: false,
-        errorGenderProduct: false,
-        hasMoreDataGenderProduct: true
+        errorGenderProduct: null,
+        hasMoreDataGenderProduct: true,
+        // brand product
+        brandProduct: [],
+        loadingBrandProduct : false,
+        errorBrandProduct : null,
+        hasMoreDataBrandProduct : true
     },
     reducers: {
         clearSubCategoryProduct: (state) => {
@@ -77,6 +96,10 @@ const productSlice = createSlice({
         clearGenderProduct: (state) => {
             state.genderProduct = [];
             state.hasMoreDataGenderProduct = true;
+        },
+        clearBrandProduct : (state) => {
+            state.brandProduct = [];
+            state.hasMoreDataBrandProduct = true;
         }
     },
     extraReducers: (builder) => {
@@ -147,8 +170,34 @@ const productSlice = createSlice({
                 state.loadingGenderProduct = false;
                 state.errorGenderProduct = action.payload || "Failed to fetch product";
             })
+        // brand product
+        builder
+            .addCase(getBrandProduct.pending,(state)=>{
+                state.loadingBrandProduct = true;
+                state.errorBrandProduct = null;
+            })
+            .addCase(getBrandProduct.fulfilled, (state,action)=>{
+                state.loadingBrandProduct = false;
+                
+                if(action.payload.length === 0){
+                    state.hasMoreDataBrandProduct = false;
+                }else{
+
+                    const newProduct = action.payload.filter(
+                        (newProduct) => !state.brandProduct.some(
+                            (existingProduct) => existingProduct.ProductNo === newProduct.ProductNo
+                        )
+                    );
+
+                    state.brandProduct = [...state.brandProduct, ...newProduct];
+                }
+            })
+            .addCase(getBrandProduct.rejected,(state,action)=>{
+                state.loadingBrandProduct = false;
+                state.errorBrandProduct = action.payload || "Failed to fetch product";
+            })
     }
 });
 
-export const { clearSubCategoryProduct,clearGenderProduct } = productSlice.actions;
+export const { clearSubCategoryProduct,clearGenderProduct, clearBrandProduct} = productSlice.actions;
 export default productSlice.reducer;
