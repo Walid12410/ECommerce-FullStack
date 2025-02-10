@@ -23,3 +23,10 @@ export const fetchBrandProduct = async(brandNo,page,limit)=> {
     const response = await request.get(`/api/product?page=${page}&limit=${limit}&BrandNo=${brandNo}`);
     return response.data;
 }
+
+
+
+export const fetchCompanyProductApi = async(companyId,page,limit)=> {
+    const response = await request.get(`/api/product?page=${page}&limit=${limit}&CompanyNo=${companyId}`);
+    return response.data;
+}

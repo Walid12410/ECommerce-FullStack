@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchBrandProduct, fetchGenderProduct, fetchProduct, fetchSubCategoryProduct } from '../../api/productApi';
+import { fetchBrandProduct,
+    fetchCompanyProductApi,
+    fetchGenderProduct,
+    fetchProduct,
+    fetchSubCategoryProduct
+} from '../../api/productApi';
 
 
 export const getProduct = createAsyncThunk(
@@ -64,6 +69,20 @@ export const getBrandProduct = createAsyncThunk(
     }
 );
 
+export const getCompanyProduct = createAsyncThunk(
+    "product/fetchCompanyProduct",
+    async ({ companyId, page, limit }, { rejectWithValue }) => {
+        try {
+            const data = await fetchCompanyProductApi(companyId, page, limit);
+            return data;
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Error fetching data");
+            return rejectWithValue(error.response?.data?.message || "Error fetching data");
+        }
+    }
+);
+
+
 
 const productSlice = createSlice({
     name: "product",
@@ -84,9 +103,14 @@ const productSlice = createSlice({
         hasMoreDataGenderProduct: true,
         // brand product
         brandProduct: [],
-        loadingBrandProduct : false,
-        errorBrandProduct : null,
-        hasMoreDataBrandProduct : true
+        loadingBrandProduct: false,
+        errorBrandProduct: null,
+        hasMoreDataBrandProduct: true,
+        // company product
+        companyProduct: [],
+        loadingCompanyProduct: false,
+        errorCompanyProduct: null,
+        hasMoreDataCompanyProduct: true
     },
     reducers: {
         clearSubCategoryProduct: (state) => {
@@ -97,9 +121,13 @@ const productSlice = createSlice({
             state.genderProduct = [];
             state.hasMoreDataGenderProduct = true;
         },
-        clearBrandProduct : (state) => {
+        clearBrandProduct: (state) => {
             state.brandProduct = [];
             state.hasMoreDataBrandProduct = true;
+        },
+        clearCompanyProduct: (state) => {
+            state.companyProduct = [];
+            state.hasMoreDataCompanyProduct = true;
         }
     },
     extraReducers: (builder) => {
@@ -172,16 +200,16 @@ const productSlice = createSlice({
             })
         // brand product
         builder
-            .addCase(getBrandProduct.pending,(state)=>{
+            .addCase(getBrandProduct.pending, (state) => {
                 state.loadingBrandProduct = true;
                 state.errorBrandProduct = null;
             })
-            .addCase(getBrandProduct.fulfilled, (state,action)=>{
+            .addCase(getBrandProduct.fulfilled, (state, action) => {
                 state.loadingBrandProduct = false;
-                
-                if(action.payload.length === 0){
+
+                if (action.payload.length === 0) {
                     state.hasMoreDataBrandProduct = false;
-                }else{
+                } else {
 
                     const newProduct = action.payload.filter(
                         (newProduct) => !state.brandProduct.some(
@@ -192,12 +220,42 @@ const productSlice = createSlice({
                     state.brandProduct = [...state.brandProduct, ...newProduct];
                 }
             })
-            .addCase(getBrandProduct.rejected,(state,action)=>{
+            .addCase(getBrandProduct.rejected, (state, action) => {
                 state.loadingBrandProduct = false;
                 state.errorBrandProduct = action.payload || "Failed to fetch product";
+            })
+        // Company product
+        builder
+            .addCase(getCompanyProduct.pending, (state) => {
+                state.loadingCompanyProduct = true;
+                state.errorCompanyProduct = null;
+            })
+            .addCase(getCompanyProduct.fulfilled, (state, action) => {
+                state.loadingCompanyProduct = false;
+
+                if (action.payload.length === 0) {
+                    state.hasMoreDataCompanyProduct = false;
+                } else {
+
+                    const newProduct = action.payload.filter(
+                        (newProduct) => !state.companyProduct.some(
+                            (existingProduct) => existingProduct.ProductNo === newProduct.ProductNo
+                        )
+                    );
+
+                    state.companyProduct = [...state.companyProduct, ...newProduct];
+                }
+            })
+            .addCase(getCompanyProduct.rejected, (state, action) => {
+                state.loadingCompanyProduct = false;
+                state.errorCompanyProduct = action.payload || "Failed to fetch product";
             })
     }
 });
 
-export const { clearSubCategoryProduct,clearGenderProduct, clearBrandProduct} = productSlice.actions;
+export const { clearSubCategoryProduct,
+    clearCompanyProduct,
+    clearGenderProduct,
+    clearBrandProduct
+} = productSlice.actions;
 export default productSlice.reducer;
