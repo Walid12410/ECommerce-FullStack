@@ -6,6 +6,7 @@ import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import BrandPage from "./pages/BrandPage/BrandPage";
 import ProductGenderPage from "./pages/ProductGenderPage/ProductGenderPage";
 import ProductBrandPage from "./pages/ProductBrandPage/ProductBrandPage";
+import CompanyPage from "./pages/CompanyPage/CompanyPage";
 
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/brand" element={<BrandPage />} />
         <Route path="/brand/:id" element={<ProductBrandPage />} />
         <Route path="/collection/:id" element={<ProductGenderPage />} />
+        <Route path="/company" element={<CompanyPage />} />
       </Routes>
     </div>
   );

@@ -26,7 +26,6 @@ const HomePage = () => {
         dispatch(getFeature({ page: 1, limit: 5 }));
     }, [dispatch]);
 
-
     if (loadingBanners && loadingLatestProduct && loadingGender && loadingFeature) {
         return (
             <div className="flex justify-center items-center h-full">

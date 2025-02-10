@@ -15,11 +15,11 @@ const NavBar = () => {
             {/** Middle section: Navigation Links */}
             <div className="hidden md:flex gap-4 pt-2 ">
                 <Link to={"/"} className="font-semibold text-xl mr-1"> Home </Link>
-                <Link to={"/collection/0"} className="font-semibold text-xl mr-1"> Collections </Link>
-                <Link to={"/category"} className="font-semibold text-xl mr-1"> Categories </Link>
+                <Link to={"/collection/0"} className="font-semibold text-xl mr-1"> Collection </Link>
+                <Link to={"/category"} className="font-semibold text-xl mr-1"> Category </Link>
                 <Link to={"/brand"} className="font-semibold text-xl mr-1"> Brand </Link>
                 <a href="#" className="font-semibold text-xl mr-1"> Sales </a>
-                <a href="#" className="font-semibold text-xl mr-1"> Stores </a>
+                <Link to={"/company"} className="font-semibold text-xl mr-1"> Stores </Link>
             </div>
 
             {/**Right section: Searh & Icons */}
