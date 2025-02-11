@@ -71,11 +71,11 @@ const CompanyDetailsPage = () => {
                         className="w-32 h-32 rounded-full object-cover mb-4"
                     />
                 )}
-                <h1 className="text-2xl font-bold">{company?.CompanyName}</h1>
-                <p className="text-lg">{company?.Description}</p>
-                <p className="text-lg font-medium">📍 {company?.CompanyLocation}</p>
-                <p className="text-lg">📧 {company?.CompanyEmail}</p>
-                <p className="text-lg">📞 {company?.CompanyNumber}</p>
+                <h1 className="text-1xl font-bold">{company?.CompanyName}</h1>
+                <p className="text-xs">{company?.Description}</p>
+                <p className="text-xs font-medium">📍 {company?.CompanyLocation}</p>
+                <p className="text-xs">📧 {company?.CompanyEmail}</p>
+                <p className="text-xs">📞 {company?.CompanyNumber}</p>
             </div>
 
             {/* Search and Filter */}

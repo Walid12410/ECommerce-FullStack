@@ -60,7 +60,7 @@ const userModel = {
 
             // Use parameterized query to avoid SQL injection
             const result = await pool.request()
-                .input('UserNo', sql.NVarChar, id)
+                .input('UserNo', sql.Int, id)
                 .query('SELECT * FROM Users WHERE UserNo = @UserNo');
 
             // return the first record if found , otherwise undefined or null

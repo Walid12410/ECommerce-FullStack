@@ -12,3 +12,8 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+
+html, body {
+    @apply bg-base-100 text-base-content; /* Uses DaisyUI theme colors */
+}

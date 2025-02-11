@@ -6,18 +6,18 @@ import { Link } from "react-router-dom";
 
 const NavBar = () => {
     return (
-        <nav className="  px-4 py-2 flex item-center justify-between ">
+        <nav className="px-4 py-2 flex item-center justify-between ">
             { /* Logo */}
             <div className="flex items-center ml-5">
-                <Logo className='size-16 cursor-pointer' />
+                <Logo className='size-8 cursor-pointer' />
             </div>
 
             {/** Middle section: Navigation Links */}
             <div className="hidden md:flex gap-4 pt-2 ">
                 <Link to={"/"} className="font-semibold text-xl mr-1"> Home </Link>
-                <Link to={"/collection/0"} className="font-semibold text-xl mr-1"> Collection </Link>
-                <Link to={"/category"} className="font-semibold text-xl mr-1"> Category </Link>
-                <Link to={"/brand"} className="font-semibold text-xl mr-1"> Brand </Link>
+                <Link to={"/collection/0"} className="font-semibold text-xl mr-1"> Collections </Link>
+                <Link to={"/category"} className="font-semibold text-xl mr-1"> Categories </Link>
+                <Link to={"/brand"} className="font-semibold text-xl mr-1"> Brands </Link>
                 <a href="#" className="font-semibold text-xl mr-1"> Sales </a>
                 <Link to={"/company"} className="font-semibold text-xl mr-1"> Stores </Link>
             </div>

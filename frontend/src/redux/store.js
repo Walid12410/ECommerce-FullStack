@@ -6,6 +6,7 @@ import productReducer from "./slices/productSlice";
 import brandReducer from "./slices/brandSlice";
 import featureReducer from "./slices/featureSlice";
 import companyReducer from "./slices/companySlice";
+import authReducer from './slices/authSlice';
 
 const store = configureStore({
     reducer : {
@@ -15,7 +16,8 @@ const store = configureStore({
         product : productReducer,
         brand : brandReducer,
         feature : featureReducer,
-        company: companyReducer
+        company: companyReducer,
+        auth : authReducer
     }
 });
 

@@ -14,7 +14,7 @@ const CompanyPage = () => {
     }, [dispatch]);
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col min-h-screen">
             <NavBar />
 
             <div className="flex flex-wrap gap-4 m-5 justify-center">

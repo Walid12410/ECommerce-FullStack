@@ -8,11 +8,28 @@ import ProductGenderPage from "./pages/ProductGenderPage/ProductGenderPage";
 import ProductBrandPage from "./pages/ProductBrandPage/ProductBrandPage";
 import CompanyPage from "./pages/CompanyPage/CompanyPage";
 import CompanyDetailsPage from "./pages/CompanyDetailsPage/CompanyDetailsPage";
+import GuestNavBar from "./components/GuestNavBar";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getUserAuth } from "./redux/slices/authSlice";
 
 
 const App = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserAuth());
+  });
+
+  const { authUser } = useSelector((state) => state.auth);
+  const [hideGuest, setHideGuest] = useState(false);
+
   return (
-    <div data-theme={"dark"} >
+    <div data-theme={"light"}>
+      {!authUser && !hideGuest && (
+        <GuestNavBar setHideGuest={setHideGuest} />
+      )}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LogInPage />} />

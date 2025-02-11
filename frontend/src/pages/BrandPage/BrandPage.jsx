@@ -13,7 +13,7 @@ const BrandPage = () => {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-screen">
       <NavBar />
 
       {/* Brand Container */}
