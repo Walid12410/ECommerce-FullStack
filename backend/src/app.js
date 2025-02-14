@@ -9,6 +9,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+app.use(cookieParser());  // This should be placed before any routes
+
 
 // CORS configuration
 const corsOptions = {
@@ -25,7 +27,6 @@ app.use(cors(corsOptions));
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
-app.use(cookieParser());  // This should be placed before any routes
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
@@ -42,6 +43,7 @@ app.use("/api/gender",require("./routes/genderRoute"));
 app.use("/api/product",require("./routes/productRoute"));
 app.use("/api/banner",require("./routes/bannerRoute"));
 app.use("/api/feature",require("./routes/featureRoute"));
+app.use("/api/offer",require("./routes/offerRoute"));
 
 
 // Error Handler Middleware

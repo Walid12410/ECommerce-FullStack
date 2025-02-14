@@ -91,7 +91,6 @@ module.exports.logoutUserController  = asyncHandler(async(_, res) => {
  * @access private (required user token) 
 */
 module.exports.checkAuthController = asyncHandler(async(req,res)=>{
-    console.log("hello");
     const user = await userModel.getUserById(req.user.userId);
     if (!user) return res.status(401).json({ message: "Unauthorized" });
 

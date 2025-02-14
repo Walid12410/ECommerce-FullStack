@@ -1,13 +1,19 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { checkLoginUser } from "../../redux/slices/authSlice";
 
 const LogInPage = () => {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  
+  const { isLoggingIn, authUser } = useSelector((state) => state.auth);
+
   const validateForm = () => {
     if (!password.trim()) return toast.error("Full name is required");
     if (!email.trim()) return toast.error("Email is required");
@@ -26,11 +32,23 @@ const LogInPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if(isLoggingIn) return;
+
     validateForm();
 
-    // login
+    const data = {
+      Email: email,
+      Password: password
+    }
+
+    dispatch(checkLoginUser({ userData: data }));
   }
 
+  useEffect(()=>{
+    if(authUser){
+      navigate("/");
+    }
+  },[authUser]);
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -62,7 +80,7 @@ const LogInPage = () => {
             />
           </div>
 
-          <button type="submit" className="btn w-full">Sign In</button>
+          <button type="submit" className="btn w-full">{ isLoggingIn? "Checking..." :"Sign In" }</button>
         </form>
 
         <p className="mt-4 text-center ">

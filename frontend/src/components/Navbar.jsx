@@ -1,16 +1,16 @@
 import Logo from "../assets/svg/nike.svg?react";
-import Search from "../assets/svg/search.svg?react";
-import Cart from "../assets/svg/cart.svg?react";
-import Favorite from "../assets/svg/favorite.svg?react";
 import { Link } from "react-router-dom";
+import { CircleUser, SearchCheck, ShoppingBag, Store,Search } from "lucide-react";
 
 const NavBar = () => {
     return (
         <nav className="px-4 py-2 flex item-center justify-between ">
             { /* Logo */}
-            <div className="flex items-center ml-5">
-                <Logo className='size-8 cursor-pointer' />
-            </div>
+            <Link 
+                to={"/"}
+                className="flex items-center ml-5">
+                <Store className='w-8 h-10 cursor-pointer' />
+            </Link>
 
             {/** Middle section: Navigation Links */}
             <div className="hidden md:flex gap-4 pt-2 ">
@@ -26,14 +26,15 @@ const NavBar = () => {
             <div className="flex item-center gap-4 pt-2">
                 {/** Search */} 
                 <div className="flex items-center bg-white h-10 rounded-full">
-                    <Search className='size-10 text-gray-400' />
+                    <Search className='w-8 h-10 text-gray-400 mr-2' />
                     <input type="text"
                         className='w-full focus:outline-none bg-transparent'
                         placeholder="Search" />
                 </div>
 
-                <Favorite className='size-10' />
-                <Cart className='size-10' />
+                <ShoppingBag className='w-8 h-10' />
+                <CircleUser className='w-8 h-10' />
+
             </div>
         </nav>
     );

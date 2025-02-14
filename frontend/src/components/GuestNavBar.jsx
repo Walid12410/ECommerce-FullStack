@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Logo from "../assets/svg/Frame.svg?react";
 
 const GuestNavBar = ({setHideGuest}) => {
@@ -19,7 +20,10 @@ const GuestNavBar = ({setHideGuest}) => {
 
             {/**Right section: Searh & Icons */}
             <div className="flex item-center gap-4 pt-2 mr-3">
-                <div className="text-sm font-bold cursor-pointer">Sign In | </div>
+                <Link
+                    to={"/login"}
+                    className="text-sm font-bold cursor-pointer">Sign In | 
+                </Link>
                 <div className="text-sm font-bold cursor-pointer">Sign Up</div>
             </div>
         </nav>

@@ -12,6 +12,7 @@ import GuestNavBar from "./components/GuestNavBar";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getUserAuth } from "./redux/slices/authSlice";
+import { Toaster } from "react-hot-toast";
 
 
 const App = () => {
@@ -26,7 +27,7 @@ const App = () => {
   const [hideGuest, setHideGuest] = useState(false);
 
   return (
-    <div data-theme={"light"}>
+    <div data-theme={"dark"}>
       {!authUser && !hideGuest && (
         <GuestNavBar setHideGuest={setHideGuest} />
       )}
@@ -41,6 +42,9 @@ const App = () => {
         <Route path="/company" element={<CompanyPage />} />
         <Route path="/company/:id" element={<CompanyDetailsPage />} />
       </Routes>
+      
+      <Toaster />
+
     </div>
   );
 }
