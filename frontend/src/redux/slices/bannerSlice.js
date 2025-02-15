@@ -27,7 +27,7 @@ const bannerSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            // fetch categorise
+            // fetch banners
             .addCase(getBanner.pending, (state) => {
                 state.loadingBanners = true;
                 state.errorBanners = null;

@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getUserAuth } from "./redux/slices/authSlice";
 import { Toaster } from "react-hot-toast";
+import OfferPage from "./pages/OfferPage/OfferPage";
 
 
 const App = () => {
@@ -21,7 +22,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getUserAuth());
-  });
+  },[dispatch]);
 
   const { authUser } = useSelector((state) => state.auth);
   const [hideGuest, setHideGuest] = useState(false);
@@ -41,10 +42,10 @@ const App = () => {
         <Route path="/collection/:id" element={<ProductGenderPage />} />
         <Route path="/company" element={<CompanyPage />} />
         <Route path="/company/:id" element={<CompanyDetailsPage />} />
+        <Route path="/offer" element={<OfferPage />} />
       </Routes>
       
       <Toaster />
-
     </div>
   );
 }

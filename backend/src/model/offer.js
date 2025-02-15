@@ -2,32 +2,30 @@ const { sql, poolPromise } = require("../config/connectToDB");
 
 
 const offerModel = {
-    async getOffers(currentTime, page, limit) {
+    async getOffers(currentTime,page,limit) {
         try {
             const pool = await poolPromise();
-
+    
             const result = await pool.request()
                 .input('CurrentTime', sql.DateTime, currentTime)
-                .input('page', sql.Int, page)
-                .input('limit', sql.Int, limit)
+                .input("page", sql.Int, page)
+                .input("limit", sql.Int, limit)
                 .query(`
                     SELECT * 
                     FROM OfferVW 
-                    WHERE 
-                        StartDate <= @CurrentTime 
-                        AND EndDate >= @CurrentTime
+                    WHERE StartDate <= @CurrentTime AND EndDate >= @CurrentTime
                     ORDER BY StartDate
                     OFFSET (@page - 1) * @limit ROWS 
-                    FETCH NEXT @limit ROWS ONLY;
+                    FETCH NEXT @limit ROWS ONLY
                 `);
-
+    
             return result.recordset;
         } catch (error) {
-            console.log("Error fetch offers: ", error);
+            console.error("Error fetching offers:", error);
             throw error;
         }
     },
-
+    
     async getOneOffer(offerNo) {
         try {
             const pool = await poolPromise();
@@ -82,7 +80,7 @@ const offerModel = {
             const pool = await poolPromise();
 
             const result = await pool.request()
-                .input('OfferNo',sql.Int,offer.id)
+                .input('OfferNo', sql.Int, offer.id)
                 .input('ProductNo', sql.Int, offer.productNo)
                 .input('DiscountAmt', sql.Decimal, offer.discount)
                 .input('StartDate', sql.DateTime, offer.startDate)
@@ -124,7 +122,7 @@ const offerModel = {
             const pool = await poolPromise();
 
             const result = await pool.request()
-                .input('OfferNo',sql.Int,offerNo)
+                .input('OfferNo', sql.Int, offerNo)
                 .query(`
                     IF NOT EXISTS (SELECT 1 FROM Offer WHERE OfferNo = @OfferNo)
                     BEGIN 
@@ -136,7 +134,7 @@ const offerModel = {
                         SELECT 'success' AS Status
                     END
                 `);
-            
+
             const status = result.recordsets[0][0].Status; // Get status result
 
             if (status === 'notFound') return { notFound: true };

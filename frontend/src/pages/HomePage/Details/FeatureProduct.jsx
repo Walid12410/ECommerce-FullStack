@@ -24,11 +24,11 @@ const FeatureProduct = ({ products }) => {
         {/** Chevron Icons */}
         <div className="flex items-center gap-2">
           <button className="p-2 bg-transparent rounded-full" onClick={scrollLeft}>
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-5 h-5 bg-primary rounded-full" />
           </button>
           <span className="text-sm font-bold">Shop</span>
           <button className="p-2 bg-transparent rounded-full" onClick={scrollRight}>
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-5 h-5 bg-primary rounded-full" />
           </button>
         </div>
       </div>

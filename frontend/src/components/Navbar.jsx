@@ -1,6 +1,5 @@
-import Logo from "../assets/svg/nike.svg?react";
 import { Link } from "react-router-dom";
-import { CircleUser, SearchCheck, ShoppingBag, Store,Search } from "lucide-react";
+import { CircleUser, ShoppingBag, Store,Search } from "lucide-react";
 
 const NavBar = () => {
     return (
@@ -9,7 +8,7 @@ const NavBar = () => {
             <Link 
                 to={"/"}
                 className="flex items-center ml-5">
-                <Store className='w-8 h-10 cursor-pointer' />
+                <Store className='w-6 h-10 cursor-pointer' />
             </Link>
 
             {/** Middle section: Navigation Links */}
@@ -18,7 +17,7 @@ const NavBar = () => {
                 <Link to={"/collection/0"} className="font-semibold text-xl mr-1"> Collections </Link>
                 <Link to={"/category"} className="font-semibold text-xl mr-1"> Categories </Link>
                 <Link to={"/brand"} className="font-semibold text-xl mr-1"> Brands </Link>
-                <a href="#" className="font-semibold text-xl mr-1"> Sales </a>
+                <Link to={"/offer"} className="font-semibold text-xl mr-1"> Sales </Link>
                 <Link to={"/company"} className="font-semibold text-xl mr-1"> Stores </Link>
             </div>
 
@@ -26,14 +25,14 @@ const NavBar = () => {
             <div className="flex item-center gap-4 pt-2">
                 {/** Search */} 
                 <div className="flex items-center bg-white h-10 rounded-full">
-                    <Search className='w-8 h-10 text-gray-400 mr-2' />
+                    <Search className='w-5 h-10 text-gray-400 mr-2' />
                     <input type="text"
                         className='w-full focus:outline-none bg-transparent'
                         placeholder="Search" />
                 </div>
 
-                <ShoppingBag className='w-8 h-10' />
-                <CircleUser className='w-8 h-10' />
+                <ShoppingBag className='w-6 h-10' />
+                <CircleUser className='w-6 h-10' />
 
             </div>
         </nav>

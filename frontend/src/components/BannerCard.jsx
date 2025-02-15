@@ -8,14 +8,14 @@ const BannerCard = ({ banners }) => {
             </div>
 
             <div className="p-4 mt-1 text-center">
-                <div className="text-5xl font-bold">{banners?.Title}</div>
+                <div className="text-4xl font-bold">{banners?.Title}</div>
                 
                 {/* Centering the description */}
-                <div className="w-96 mx-auto mt-5 text-center align-middle">
-                    <div className="text-sm">{banners?.Description}</div>
+                <div className="w-full md:w-96 mx-auto mt-5 text-center align-middle">
+                    <div className="text-xs">{banners?.Description}</div>
                 </div>
 
-                <div className="btn btn-active btn-neutral mt-5 w-32">Shop Now</div>
+                <div className="btn btn-active btn-neutral mt-5 w-28">Shop Now</div>
             </div>
         </div>
     );

@@ -9,33 +9,34 @@ const isValidDateTime = (dateTimeString) => {
 };
 
 
+
 /**
  * @desc create offer
  * @Route /api/offer
  * @method post 
  * @access private (only company)
 */
-module.exports.createOfferController = asyncHandler(async(req,res)=>{
-    const {error} = validationOffer(req.body);
-    if(error) {
-        return res.status(400).json({ message : error.details[0].message});
+module.exports.createOfferController = asyncHandler(async (req, res) => {
+    const { error } = validationOffer(req.body);
+    if (error) {
+        return res.status(400).json({ message: error.details[0].message });
     }
 
     const offer = {
-        productNo : req.body.ProductNo,
+        productNo: req.body.ProductNo,
         discount: req.body.DiscountAmt,
-        startDate : req.body.StartDate,
-        endDate : req.body.EndDate
+        startDate: req.body.StartDate,
+        endDate: req.body.EndDate
     }
 
     const result = await offerModel.createOffer(offer);
 
-    if(result.notFound){
-        return res.status(404).json({message : "Product not found"});
-    }else if (result.success){
-        return res.status(201).json({message : "Offer created successfully"});
-    }else{
-        return res.status(500).json({message : "Interal Server Error"});
+    if (result.notFound) {
+        return res.status(404).json({ message: "Product not found" });
+    } else if (result.success) {
+        return res.status(201).json({ message: "Offer created successfully" });
+    } else {
+        return res.status(500).json({ message: "Interal Server Error" });
     }
 });
 
@@ -46,14 +47,15 @@ module.exports.createOfferController = asyncHandler(async(req,res)=>{
  * @method get
  * @access public
 */
-module.exports.getOffersController = asyncHandler(async(req,res)=> {
-    const {page,limit, currentTime} = req.query;
+module.exports.getOffersController = asyncHandler(async (req, res) => {
+    const { page, limit, time } = req.query;
 
-    if (!currentTime) {
+
+    if (!time) {
         return res.status(400).json({ message: "currentTime is required" });
     }
 
-    if (!isValidDateTime(currentTime)) {
+    if (!isValidDateTime(time)) {
         return res.status(400).json({ message: "Invalid date-time format. Expected format: YYYY-MM-DD HH:MM:SS" });
     }
 
@@ -65,7 +67,7 @@ module.exports.getOffersController = asyncHandler(async(req,res)=> {
         return res.status(400).json({ message: "Page and limit must be numbers" });
     }
 
-    const result = await offerModel.getOffers(currentTime,page,limit);
+    const result = await offerModel.getOffers(time,page,limit);
 
     res.status(200).json(result);
 });
@@ -77,7 +79,7 @@ module.exports.getOffersController = asyncHandler(async(req,res)=> {
  * @method get
  * @access public
 */
-module.exports.getOfferController = asyncHandler(async(req,res)=> {
+module.exports.getOfferController = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
     if (id === undefined || id === "") {
@@ -95,10 +97,10 @@ module.exports.getOfferController = asyncHandler(async(req,res)=> {
  * @method put 
  * @access private (only company)
 */
-module.exports.updateOfferController = asyncHandler(async(req,res)=>{
-    const {error} = validationOffer(req.body);
-    if(error) {
-        return res.status(400).json({ message : error.details[0].message});
+module.exports.updateOfferController = asyncHandler(async (req, res) => {
+    const { error } = validationOffer(req.body);
+    if (error) {
+        return res.status(400).json({ message: error.details[0].message });
     }
 
     const { id } = req.params;
@@ -109,22 +111,22 @@ module.exports.updateOfferController = asyncHandler(async(req,res)=>{
 
     const offer = {
         id: id,
-        productNo : req.body.ProductNo,
+        productNo: req.body.ProductNo,
         discount: req.body.DiscountAmt,
-        startDate : req.body.StartDate,
-        endDate : req.body.EndDate
+        startDate: req.body.StartDate,
+        endDate: req.body.EndDate
     }
 
     const result = await offerModel.updateOffer(offer);
 
-    if(result.notFound){
-        return res.status(404).json({message : "Offer not found"});
-    }else if(result.productNotFound){
-        return res.status(400).json({message : "Product not found"});
-    } else if (result.success){
-        return res.status(201).json({message : "Offer created successfully"});
-    } else{
-        return res.status(500).json({message : "Interal Server Error"});
+    if (result.notFound) {
+        return res.status(404).json({ message: "Offer not found" });
+    } else if (result.productNotFound) {
+        return res.status(400).json({ message: "Product not found" });
+    } else if (result.success) {
+        return res.status(201).json({ message: "Offer created successfully" });
+    } else {
+        return res.status(500).json({ message: "Interal Server Error" });
     }
 });
 
@@ -135,7 +137,7 @@ module.exports.updateOfferController = asyncHandler(async(req,res)=>{
  * @method delete 
  * @access private (only company)
 */
-module.exports.deleteOfferController = asyncHandler(async(req,res)=>{
+module.exports.deleteOfferController = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
     if (id === undefined || id === "") {
@@ -143,11 +145,11 @@ module.exports.deleteOfferController = asyncHandler(async(req,res)=>{
     }
 
     const result = await offerModel.deleteOffer(id);
-    if(result.notFound){
-        return res.status(404).json({message : "Offer not found"});
-    }else if(result.success){
-        return res.status(200).json({message : "Offer deleted successfully"});
-    }else{
-        return res.status(500).json({message : "Interal Server Error"});
+    if (result.notFound) {
+        return res.status(404).json({ message: "Offer not found" });
+    } else if (result.success) {
+        return res.status(200).json({ message: "Offer deleted successfully" });
+    } else {
+        return res.status(500).json({ message: "Interal Server Error" });
     }
 })
