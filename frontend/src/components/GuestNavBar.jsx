@@ -22,9 +22,12 @@ const GuestNavBar = ({setHideGuest}) => {
             <div className="flex item-center gap-4 pt-2 mr-3">
                 <Link
                     to={"/login"}
-                    className="text-sm font-bold cursor-pointer">Sign In | 
+                    className="text-sm font-bold cursor-pointer">Sign In |
                 </Link>
-                <div className="text-sm font-bold cursor-pointer">Sign Up</div>
+                <Link
+                    to={"/register"}
+                    className="text-sm font-bold cursor-pointer">Sign Up
+                </Link>
             </div>
         </nav>
     );

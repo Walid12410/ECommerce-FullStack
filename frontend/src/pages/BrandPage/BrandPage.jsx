@@ -13,7 +13,7 @@ const BrandPage = () => {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen">
       <NavBar />
 
       {/* Brand Container */}
@@ -27,7 +27,7 @@ const BrandPage = () => {
               to={`/brand/${brand?.BrandID}`} 
               state={{ brand }}
               key={brand?.BrandID}
-              className="w-32 sm:w-40 md:w-48 lg:w-56 xl:w-64 h-56 flex items-center justify-center" // Responsive sizing
+              className="w-32 sm:w-40 md:w-48 lg:w-56 xl:w-64 h-40 flex items-center justify-center" // Responsive sizing
             >
               <img
                 src={brand?.BrandImage}

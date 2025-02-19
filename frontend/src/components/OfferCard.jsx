@@ -46,7 +46,7 @@ const OfferCard = ({offer}) => {
                 <p className="text-xs font-bold">{offer?.SubCategoryName} {offer?.ColorName}</p>
                 <p className="text-xs font-bold underline cursor-pointer">{offer?.BrandName}</p>
                 <div className="flex justify-between items-center">
-                    <span className="text-xl font-semibold text-primary">{`$${offer?.Price - offer?.DiscountAmt}`}</span>
+                    <span className="text-xl font-semibold text-primary">${offer?.DiscountAmt}</span>
                     <span className="text-sm line-through">{`$${offer?.Price}`}</span>
                 </div>
                 <div className="mt-3">

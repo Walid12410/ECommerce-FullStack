@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { getUserAuth } from "./redux/slices/authSlice";
 import { Toaster } from "react-hot-toast";
 import OfferPage from "./pages/OfferPage/OfferPage";
+import BottomNavBar from "./components/BottomNavBar";
+import AdminLoginPage from "./pages/AdminPages/LoginPage";
 
 
 const App = () => {
@@ -22,13 +24,14 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getUserAuth());
-  },[dispatch]);
+  }, [dispatch]);
 
   const { authUser } = useSelector((state) => state.auth);
+  const { theme } = useSelector((state) => state.theme);
   const [hideGuest, setHideGuest] = useState(false);
 
   return (
-    <div data-theme={"dark"}>
+    <div data-theme={theme}>
       {!authUser && !hideGuest && (
         <GuestNavBar setHideGuest={setHideGuest} />
       )}
@@ -43,8 +46,9 @@ const App = () => {
         <Route path="/company" element={<CompanyPage />} />
         <Route path="/company/:id" element={<CompanyDetailsPage />} />
         <Route path="/offer" element={<OfferPage />} />
+        <Route path="/admin" element={<AdminLoginPage />} />
       </Routes>
-      
+      <BottomNavBar />
       <Toaster />
     </div>
   );

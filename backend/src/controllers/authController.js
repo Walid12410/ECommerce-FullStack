@@ -72,6 +72,48 @@ module.exports.loginUserController = asyncHandler(async (req, res) => {
 
 
 /**
+ * @desc login admin
+ * @Route /api/auth/login-admin
+ * @method POST
+ * @access public 
+*/
+module.exports.loginAdminController = asyncHandler(async (req, res) => {
+    const { error } = validationLoginUser(req.body);
+    if (error) {
+        return res.status(400).json({ message: error.details[0].message });
+    }
+
+    const user = await userModel.getUserByEmail(req.body.Email);
+    if (!user) {
+        return res.status(400).json({ message: "Incorrect email or password" });
+    }
+
+    if (!user.IsAdmin) {
+        return res.status(403).json({ message: "Forbidden" });
+    }
+
+    // Compare password with the hashed password stored in the database
+    const isPasswordValid = await bcrypt.compare(req.body.Password, user.Password);
+
+    if (!isPasswordValid) {
+        return res.status(400).json({ message: "Incorrect email or password" });
+    }
+
+    // generate token
+    const token = generateToken(user.UserNo, user.IsAdmin, res);
+
+    // Omit the password from the user object before sending it in the response
+    const { Password, ...userWithoutPassword } = user;
+
+    res.status(200).json({
+        message: "Login successful",
+        user: userWithoutPassword, // Return the user object without the password
+        token
+    });
+});
+
+
+/**
  * @desc logout user
  * @Route /api/auth/logout
  * @method POST
