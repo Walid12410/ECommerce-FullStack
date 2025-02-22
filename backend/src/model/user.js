@@ -125,7 +125,25 @@ const userModel = {
             console.error('Error fetching users:', error); // Log the error
             throw error; // Re-throw the error for upstream handling
         }
+    },
+
+    async countUsers() {
+        try {
+            const pool = await poolPromise();
+    
+            const result = await pool.request()
+                .query(`
+                    SELECT COUNT(*) AS UserCount
+                    FROM Users
+                `);
+    
+            return result.recordset[0].UserCount; // Return the count of users
+        } catch (error) {
+            console.error('Error counting users:', error); // Log the error
+            throw error; // Re-throw the error for upstream handling
+        }
     }
+    
 };
 
 

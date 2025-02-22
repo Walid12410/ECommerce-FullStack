@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CircleUser, ShoppingBag, Store, Search, Moon, Sun } from "lucide-react";
+import { CircleUser, ShoppingBag, Store, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setTheme } from "../redux/slices/themeSlice";

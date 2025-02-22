@@ -16,6 +16,8 @@ import { Toaster } from "react-hot-toast";
 import OfferPage from "./pages/OfferPage/OfferPage";
 import BottomNavBar from "./components/BottomNavBar";
 import AdminLoginPage from "./pages/AdminPages/LoginPage";
+import AdminDashBoardPage from "./pages/AdminPages/AdminDashBoardPage";
+import ViewUserPage from "./pages/AdminPages/ViewUserPage";
 
 
 const App = () => {
@@ -47,8 +49,13 @@ const App = () => {
         <Route path="/company/:id" element={<CompanyDetailsPage />} />
         <Route path="/offer" element={<OfferPage />} />
         <Route path="/admin" element={<AdminLoginPage />} />
+        <Route path="/admin/dashboard" element={<AdminDashBoardPage />} />
+        <Route path="/admin/view-user" element={<ViewUserPage />} />
+
       </Routes>
-      <BottomNavBar />
+      {(!authUser || (authUser && !authUser.IsAdmin)) && (
+        <BottomNavBar />
+      )}
       <Toaster />
     </div>
   );

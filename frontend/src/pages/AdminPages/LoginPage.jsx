@@ -44,9 +44,8 @@ const AdminLoginPage = () => {
     }
   
     useEffect(()=>{
-      if(authUser){
-        // navigate("/admin/dashboard");
-        navigate("/");
+      if(authUser && authUser.IsAdmin === true){
+        navigate("/admin/dashboard");
       }
     },[authUser]);
   

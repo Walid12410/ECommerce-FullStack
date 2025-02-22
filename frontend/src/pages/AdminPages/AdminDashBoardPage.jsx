@@ -1,7 +1,12 @@
+import Header from "../../components/Header";
+
 const AdminDashBoardPage = () => {
-    return ( 
-        <h1>asdasdasd</h1>
+    return (
+        <div className="flex flex-col min-h-screen">
+            <Header />
+            <h1>asdasdasd</h1>
+        </div>
     );
-}
- 
+};
+
 export default AdminDashBoardPage;

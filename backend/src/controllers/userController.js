@@ -70,3 +70,14 @@ module.exports.updateUserProfileController = asyncHandler(async (req, res) => {
 });
 
 
+
+/**
+ * @desc count user 
+ * @Route /api/user/count
+ * @method get
+ * @access private(only admin)
+*/
+module.exports.countUserController = asyncHandler(async(req,res)=> {
+    const userCount = await userModel.countUsers();
+    return res.status(200).json(userCount);
+});

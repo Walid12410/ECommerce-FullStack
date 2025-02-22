@@ -9,6 +9,7 @@ import companyReducer from "./slices/companySlice";
 import authReducer from './slices/authSlice';
 import offerReducer from './slices/offerSlice';
 import themeReducer from './slices/themeSlice';
+import userReducer from './slices/userSlice';
 
 const store = configureStore({
     reducer : {
@@ -21,7 +22,8 @@ const store = configureStore({
         company: companyReducer,
         auth : authReducer,
         offer: offerReducer,
-        theme: themeReducer
+        theme: themeReducer,
+        user: userReducer
     }
 });
 
