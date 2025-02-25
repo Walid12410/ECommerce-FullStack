@@ -1,4 +1,4 @@
-import Header from "../../components/Header";
+import Header from "../../../admin-components/Header";
 
 const AdminDashBoardPage = () => {
     return (

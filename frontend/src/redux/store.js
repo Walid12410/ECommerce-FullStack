@@ -10,6 +10,7 @@ import authReducer from './slices/authSlice';
 import offerReducer from './slices/offerSlice';
 import themeReducer from './slices/themeSlice';
 import userReducer from './slices/userSlice';
+import colorReducer from './slices/colorSlice';
 
 const store = configureStore({
     reducer : {
@@ -23,7 +24,8 @@ const store = configureStore({
         auth : authReducer,
         offer: offerReducer,
         theme: themeReducer,
-        user: userReducer
+        user: userReducer,
+        color: colorReducer
     }
 });
 

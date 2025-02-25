@@ -15,9 +15,13 @@ import { getUserAuth } from "./redux/slices/authSlice";
 import { Toaster } from "react-hot-toast";
 import OfferPage from "./pages/OfferPage/OfferPage";
 import BottomNavBar from "./components/BottomNavBar";
-import AdminLoginPage from "./pages/AdminPages/LoginPage";
-import AdminDashBoardPage from "./pages/AdminPages/AdminDashBoardPage";
-import ViewUserPage from "./pages/AdminPages/ViewUserPage";
+import AdminLoginPage from "./pages/AdminPages/auth/LoginPage";
+import AdminDashBoardPage from "./pages/AdminPages/Dashboard/AdminDashBoardPage";
+import ViewUserPage from "./pages/AdminPages/User/ViewUserPage";
+import AddUserPage from "./pages/AdminPages/User/AddUserPage";
+import ViewBrandPage from "./pages/AdminPages/Brand/ViewBrandPage";
+import ViewCompanyPage from "./pages/AdminPages/Company/ViewCompanyPage";
+import ViewColorPage from "./pages/AdminPages/Color/ViewColorPage";
 
 
 const App = () => {
@@ -48,9 +52,14 @@ const App = () => {
         <Route path="/company" element={<CompanyPage />} />
         <Route path="/company/:id" element={<CompanyDetailsPage />} />
         <Route path="/offer" element={<OfferPage />} />
+        {/** Admin and company controll */}
         <Route path="/admin" element={<AdminLoginPage />} />
         <Route path="/admin/dashboard" element={<AdminDashBoardPage />} />
         <Route path="/admin/view-user" element={<ViewUserPage />} />
+        <Route path="/admin/add-user" element={<AddUserPage />} />
+        <Route path="/admin/view-brand" element={<ViewBrandPage />} />
+        <Route path="/admin/view-company" element={<ViewCompanyPage />} />
+        <Route path="/admin/view-color" element={<ViewColorPage />} />
 
       </Routes>
       {(!authUser || (authUser && !authUser.IsAdmin)) && (

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {  useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { checkAdminLogin } from "../../redux/slices/authSlice";
+import { checkAdminLogin } from "../../../redux/slices/authSlice";
 
 const AdminLoginPage = () => {
     const dispatch = useDispatch();

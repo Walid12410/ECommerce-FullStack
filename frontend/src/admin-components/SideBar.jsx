@@ -23,6 +23,11 @@ const SideBar = () => {
 
                 <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
                     {/* Sidebar dropdown items here */}
+                    <li className="mb-5">            
+                        <Link to={"/admin"} className="cursor-pointer font-semibold flex items-center gap-2">
+                       <LayoutDashboard size={20} /> Dashboard
+                        </Link>
+                    </li>
                     <li className="mb-2">
                         <details>
                             <summary className="cursor-pointer font-semibold flex items-center gap-2">
@@ -30,7 +35,7 @@ const SideBar = () => {
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
                                 <li><Link to={"/admin/view-user"}>View User</Link></li>
-                                <li><a>Add User</a></li>
+                                <li><Link to={"/admin/add-user"}>Add User</Link></li>
                             </ul>
                         </details>
                     </li>
@@ -41,7 +46,7 @@ const SideBar = () => {
                                 <Package size={20} /> Brand
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
-                                <li><a>View Brand</a></li>
+                                <li><Link to={"/admin/view-brand"}>View Brand</Link></li>
                                 <li><a>Add Brand</a></li>
                             </ul>
                         </details>
@@ -53,7 +58,7 @@ const SideBar = () => {
                                 <Building size={20} /> Company
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
-                                <li><a>View Company</a></li>
+                                <li><Link to={"/admin/view-company"}>View Companies</Link></li>
                                 <li><a>Add Company</a></li>
                                 <li><a>Add User Company</a></li>
                             </ul>
@@ -153,8 +158,7 @@ const SideBar = () => {
                                 <Palette size={20} /> Color
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
-                                <li><a>View Color</a></li>
-                                <li><a>Add Color</a></li>
+                                <li><Link to={"/admin/view-color"}>View Color</Link></li>
                             </ul>
                         </details>
                     </li>

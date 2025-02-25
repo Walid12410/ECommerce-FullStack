@@ -1,25 +1,27 @@
-
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-    return (
-      <div className="flex justify-center mt-4">
+  return (
+    <div className="flex justify-center mt-4">
+      <div className="join">
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
-          className="btn btn-primary btn-sm"
+          className="join-item btn"
         >
-          Previous
+          «
         </button>
-        <span className="mx-4">{currentPage}</span>
+        <button className="join-item btn">
+          Page {currentPage}
+        </button>
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className="btn btn-primary btn-sm"
+          className="join-item btn"
         >
-          Next
+          »
         </button>
       </div>
-    );
-  };
-  
-  export default Pagination;
-  
+    </div>
+  );
+};
+
+export default Pagination;

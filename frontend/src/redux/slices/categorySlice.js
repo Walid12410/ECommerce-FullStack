@@ -26,7 +26,7 @@ const categorySlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            // fetch categorise
+            // fetch categorise with subCategory
             .addCase(getCategory.pending, (state) => {
                 state.loadingCategory = true;
                 state.errorCategory = null;
@@ -39,6 +39,7 @@ const categorySlice = createSlice({
                 state.loadingCategory = false;
                 state.errorCategory = action.payload || "Failed to fetch category";
             });
+            // fetch category
         
     }
 });

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, getUserCount } from "../../redux/slices/userSlice";
-import Header from "../../components/Header";
-import Pagination from "../../components/Pagination"; // Import the Pagination component
+import { getUser, getUserCount } from "../../../redux/slices/userSlice";
+import Header from "../../../admin-components/Header";
+import Pagination from "../../../admin-components/Pagination"; // Import the Pagination component
 import { Loader } from "lucide-react"; // Import the Loader icon from lucide-react
 
 const ViewUserPage = () => {
@@ -34,7 +34,8 @@ const ViewUserPage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      
+      <input type="text" placeholder="Search for specific user" className="ml-3 mt-2 input input-bordered w-full max-w-xs text-sm font-bold" />
+
       {/* Table for displaying users */}
       <div className="overflow-x-auto mt-4 flex-grow p-5">
         <table className="min-w-full table-auto">
@@ -60,7 +61,7 @@ const ViewUserPage = () => {
               </tr>
             ) : (
               users.map((user) => (
-                <tr key={user.UserId}>
+                <tr key={user.UserId} className="border-b border-base-300"> {/* Add border here */}
                   <td className="px-6 py-4 text-sm">{user.UserName}</td>
                   <td className="px-6 py-4 text-sm">{user.Email}</td>
                   <td className="px-6 py-4 text-sm">{user.PhoneNumber}</td>
@@ -77,15 +78,16 @@ const ViewUserPage = () => {
               ))
             )}
           </tbody>
+
         </table>
       </div>
 
       {/* Pagination */}
       <div className="mb-4">
-        <Pagination 
-          currentPage={page} 
-          totalPages={totalPages} 
-          onPageChange={handlePagination} 
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={handlePagination}
         />
       </div>
     </div>
