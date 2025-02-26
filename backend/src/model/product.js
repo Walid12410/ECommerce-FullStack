@@ -301,6 +301,21 @@ const productModel = {
     // @TODO: check if product is in order or offer etc... then delete or send message
     async deleteProduct(productNo) {
 
+    },
+
+    async countProduct() {
+        try {
+            const pool = await poolPromise();
+
+            const result = await pool.request()
+                .query(`SELECT COUNT(*) AS ProductCount FROM Product`);
+
+            return result.recordset[0].ProductCount;
+        } catch (error) {
+            console.error('Error counting products:', error); // Log the error
+            throw error; // Re-throw the error for upstream handling
+
+        }
     }
 
 }

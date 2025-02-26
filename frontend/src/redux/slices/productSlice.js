@@ -1,10 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchBrandProduct,
     fetchCompanyProductApi,
+    fetchCountProductApi,
     fetchGenderProduct,
     fetchProduct,
     fetchSubCategoryProduct
 } from '../../api/productApi';
+import toast from 'react-hot-toast';
 
 
 export const getProduct = createAsyncThunk(
@@ -82,12 +84,26 @@ export const getCompanyProduct = createAsyncThunk(
     }
 );
 
+export const getProductCount = createAsyncThunk(
+    "product/fetchProductCount",
+    async (_, { rejectWithValue }) => {
+        try {
+            const data = await fetchCountProductApi();
+            return data;
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Error fetching data");
+            return rejectWithValue(error.response?.data?.message || "Error fetching data");
+        }
+    }
+);
 
 
 const productSlice = createSlice({
     name: "product",
     initialState: {
-        // latest product (5 items)
+        // count all product
+        countProducts: 0,
+        // latest product 
         latestProduct: [],
         loadingLatestProduct: false,
         errorLatestProduct: null,
@@ -131,6 +147,17 @@ const productSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
+        builder
+            .addCase(getProductCount.pending,(state)=> {
+                state.countProducts = 0;
+            })
+            .addCase(getProductCount.fulfilled,(state,action)=>{
+                state.countProducts = action.payload;
+            })
+            .addCase(getProductCount.rejected,(state)=>{
+                state.countProducts = 0;
+            })
+        // all product
         builder
             .addCase(getProduct.pending, (state) => {
                 state.loadingLatestProduct = true;

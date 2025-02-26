@@ -250,5 +250,9 @@ module.exports.updateProductImageController = asyncHandler(async (req, res) => {
 });
 
 
+module.exports.countProductsController = asyncHandler(async(req,res)=>{
+    const productCount = await productModel.countProduct();
+    return res.status(200).json(productCount);
+});
 
 //@TODO: delete product controller(CHECK THE OFFER , ORDER ETC...)

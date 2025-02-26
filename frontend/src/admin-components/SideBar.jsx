@@ -73,16 +73,6 @@ const SideBar = () => {
                             <ul className="p-2 bg-base-300 rounded-lg">
                                 <li><a>View Category</a></li>
                                 <li><a>Add Category</a></li>
-                            </ul>
-                        </details>
-                    </li>
-
-                    <li className="mb-2">
-                        <details>
-                            <summary className="cursor-pointer font-semibold flex items-center gap-2">
-                                <Grid size={20} /> Subcategory
-                            </summary>
-                            <ul className="p-2 bg-base-300 rounded-lg">
                                 <li><a>View Subcategory</a></li>
                                 <li><a>Add Subcategory</a></li>
                             </ul>
@@ -95,7 +85,7 @@ const SideBar = () => {
                                 <ShoppingCart size={20} /> Product
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
-                                <li><a>View Product</a></li>
+                                <li><Link to={"/admin/view-product"}>View Product</Link></li>
                                 <li><a>Add Product</a></li>
                             </ul>
                         </details>

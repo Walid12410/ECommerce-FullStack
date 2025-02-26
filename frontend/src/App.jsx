@@ -22,6 +22,7 @@ import AddUserPage from "./pages/AdminPages/User/AddUserPage";
 import ViewBrandPage from "./pages/AdminPages/Brand/ViewBrandPage";
 import ViewCompanyPage from "./pages/AdminPages/Company/ViewCompanyPage";
 import ViewColorPage from "./pages/AdminPages/Color/ViewColorPage";
+import ViewProductPage from "./pages/AdminPages/Product/ViewProductPage";
 
 
 const App = () => {
@@ -60,6 +61,7 @@ const App = () => {
         <Route path="/admin/view-brand" element={<ViewBrandPage />} />
         <Route path="/admin/view-company" element={<ViewCompanyPage />} />
         <Route path="/admin/view-color" element={<ViewColorPage />} />
+        <Route path="/admin/view-product" element={<ViewProductPage />} />
 
       </Routes>
       {(!authUser || (authUser && !authUser.IsAdmin)) && (

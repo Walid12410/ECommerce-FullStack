@@ -7,6 +7,13 @@ export const fetchProduct = async(page,limit)=> {
 }
 
 
+
+export const fetchCountProductApi = async()=> {
+    const response = await request.get(`/api/product/count`);
+    return response.data;
+}
+
+
 export const fetchSubCategoryProduct = async(subCategoryID,page,limit)=> {
     const response = await request.get(`/api/product?page=${page}&limit=${limit}&subCategoryNo=${subCategoryID}`);
     return response.data;
