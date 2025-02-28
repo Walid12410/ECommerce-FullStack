@@ -23,6 +23,8 @@ import ViewBrandPage from "./pages/AdminPages/Brand/ViewBrandPage";
 import ViewCompanyPage from "./pages/AdminPages/Company/ViewCompanyPage";
 import ViewColorPage from "./pages/AdminPages/Color/ViewColorPage";
 import ViewProductPage from "./pages/AdminPages/Product/ViewProductPage";
+import ViewCategoryPage from "./pages/AdminPages/Category/ViewCategoryPage";
+import ViewFeaturePage from "./pages/AdminPages/Feature/ViewFeaturePage";
 
 
 const App = () => {
@@ -53,6 +55,7 @@ const App = () => {
         <Route path="/company" element={<CompanyPage />} />
         <Route path="/company/:id" element={<CompanyDetailsPage />} />
         <Route path="/offer" element={<OfferPage />} />
+        
         {/** Admin and company controll */}
         <Route path="/admin" element={<AdminLoginPage />} />
         <Route path="/admin/dashboard" element={<AdminDashBoardPage />} />
@@ -62,6 +65,8 @@ const App = () => {
         <Route path="/admin/view-company" element={<ViewCompanyPage />} />
         <Route path="/admin/view-color" element={<ViewColorPage />} />
         <Route path="/admin/view-product" element={<ViewProductPage />} />
+        <Route path="/admin/view-category" element={<ViewCategoryPage />} />
+        <Route path="/admin/view-feature" element={<ViewFeaturePage />} />
 
       </Routes>
       {(!authUser || (authUser && !authUser.IsAdmin)) && (

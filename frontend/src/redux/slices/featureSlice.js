@@ -8,7 +8,7 @@ export const getFeature = createAsyncThunk(
     async ({ page, limit }, { rejectWithValue }) => {
         try {
             const time = getCurrentTime();
-            const data = await fetchFeatureApi(time,page, limit);
+            const data = await fetchFeatureApi(time, page, limit);
             return data;
         } catch (error) {
             toast.error(error.response?.data?.message || "Error fetching data");
@@ -24,8 +24,14 @@ const featureSlice = createSlice({
         feature: [],
         loadingFeature: false,
         errorFeature: null,
+        hasMoreDataFeature: true,
     },
-    reducers: {},
+    reducers: {
+        clearFeature: (state) => {
+            state.hasMoreDataFeature = true;
+            state.feature = [];
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getFeature.pending, (state) => {
@@ -34,7 +40,20 @@ const featureSlice = createSlice({
             })
             .addCase(getFeature.fulfilled, (state, action) => {
                 state.loadingFeature = false;
-                state.feature = action.payload;
+
+                if (action.payload.length === 0) {
+                    state.hasMoreDataFeature = false; // No more data to load
+                } else {
+                    // Filter out duplicates based on FeatureID
+                    const newFeatures = action.payload.filter(
+                        (newFeature) => !state.feature.some(
+                            (existingProduct) => existingProduct.FeatureID === newFeature.FeatureID
+                        )
+                    );
+
+                    // Add only non-duplicate products to the state
+                    state.feature = [...state.feature, ...newFeatures];
+                }
             })
             .addCase(getFeature.rejected, (state, action) => {
                 state.loadingFeature = false;
@@ -43,4 +62,5 @@ const featureSlice = createSlice({
     }
 });
 
+export const { clearFeature } = featureSlice.actions;
 export default featureSlice.reducer;

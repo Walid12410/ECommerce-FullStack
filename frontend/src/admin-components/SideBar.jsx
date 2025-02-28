@@ -1,7 +1,7 @@
 import {
     Package,
     Building,
-    List, Grid,
+    List,
     ShoppingCart, Tag,
     Ticket, Star, ClipboardList,
     Palette, Image, PersonStanding,
@@ -23,9 +23,9 @@ const SideBar = () => {
 
                 <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
                     {/* Sidebar dropdown items here */}
-                    <li className="mb-5">            
+                    <li className="mb-5">
                         <Link to={"/admin"} className="cursor-pointer font-semibold flex items-center gap-2">
-                       <LayoutDashboard size={20} /> Dashboard
+                            <LayoutDashboard size={20} /> Dashboard
                         </Link>
                     </li>
                     <li className="mb-2">
@@ -71,9 +71,8 @@ const SideBar = () => {
                                 <List size={20} /> Category
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
-                                <li><a>View Category</a></li>
+                                <li><Link to={"/admin/view-category"}>View Category</Link></li>
                                 <li><a>Add Category</a></li>
-                                <li><a>View Subcategory</a></li>
                                 <li><a>Add Subcategory</a></li>
                             </ul>
                         </details>
@@ -123,7 +122,7 @@ const SideBar = () => {
                                 <Star size={20} /> Feature Product
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
-                                <li><a>View Feature Product</a></li>
+                                <li><Link to={"/admin/view-feature"}>View Feature Product</Link></li>
                                 <li><a>Add Feature Product</a></li>
                                 <li><a>View Ended Feature Product</a></li>
                             </ul>
@@ -142,16 +141,6 @@ const SideBar = () => {
                         </details>
                     </li>
 
-                    <li className="mb-2">
-                        <details>
-                            <summary className="cursor-pointer font-semibold flex items-center gap-2">
-                                <Palette size={20} /> Color
-                            </summary>
-                            <ul className="p-2 bg-base-300 rounded-lg">
-                                <li><Link to={"/admin/view-color"}>View Color</Link></li>
-                            </ul>
-                        </details>
-                    </li>
 
                     <li className="mb-2">
                         <details>
@@ -165,6 +154,12 @@ const SideBar = () => {
                             </ul>
                         </details>
                     </li>
+
+                    <li className="mb-2">
+                        <Link to={"/admin/view-color"}> <Palette size={20} /> Color</Link>
+                    </li>
+
+
                 </ul>
             </div>
         </div>
