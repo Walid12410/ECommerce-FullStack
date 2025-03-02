@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategory } from "../../../redux/slices/categorySlice";
 import Header from "../../../admin-components/Header";
@@ -8,13 +8,18 @@ const ViewCategoryPage = () => {
     const dispatch = useDispatch();
 
     const { categories, loadingCategory, errorCategory } = useSelector((state) => state.categories);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editingItem, setEditingItem] = useState(null);
 
     useEffect(() => {
         dispatch(getCategory());
     }, [dispatch]);
 
-    const handleEdit = (type, id) => {
+    const handleEdit = (type, id, name) => {
         console.log(`Edit ${type} with ID: ${id}`);
+        setIsEditing(true);
+        setEditingItem({ type, id, name });
+        console.log(editingItem);
     };
 
     const handleDelete = (type, id) => {
@@ -42,7 +47,7 @@ const ViewCategoryPage = () => {
                             <div>
                                 <button
                                     className="btn btn-success mr-2"
-                                    onClick={() => handleEdit('category', category.CategoryNo)}
+                                    onClick={(e) => handleEdit("category", category.CategoryNo, category.CategoryName)}
                                 >
                                     Edit
                                 </button>
@@ -66,7 +71,7 @@ const ViewCategoryPage = () => {
                                         <div>
                                             <button
                                                 className="btn btn-success mr-2"
-                                                onClick={() => handleEdit('subcategory', subCategory.SubCategoryNo)}
+                                                onClick={() => handleEdit('subcategory', subCategory.SubCategoryNo, subCategory.SubCategoryName)}
                                             >
                                                 Edit
                                             </button>
@@ -86,6 +91,28 @@ const ViewCategoryPage = () => {
                     </div>
                 ))}
             </div>
+            {isEditing && editingItem && (
+                <div className="fixed inset-0 flex items-center justify-center bg-base-300 bg-opacity-50">
+                    <div className="bg-base-300 p-6 rounded-lg shadow-lg">
+                        <h3 className="text-xl font-bold mb-4">Edit "{editingItem?.name}"</h3>
+                        <input
+                            type="text"
+                            className="input input-bordered w-full mb-4"
+                            value={editingItem?.name}
+                        />
+                        <div className="flex justify-end">
+                            <button
+                                className="btn btn-success mr-2"
+                            >
+                                Save
+                            </button>
+                            <button className="btn btn-neutral" onClick={() => setIsEditing(false)}>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

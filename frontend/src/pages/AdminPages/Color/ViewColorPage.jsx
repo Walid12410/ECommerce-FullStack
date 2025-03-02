@@ -63,7 +63,7 @@ const ViewColorPage = () => {
                                 <td className="border px-4 py-2 text-xl font-bold">{c.ColorName}</td>
                                 <td className="border px-4 py-2 flex gap-2">
                                     <button 
-                                        className=" px-2 py-1 rounded btn btn-warning"
+                                        className=" px-2 py-1 rounded btn btn-success"
                                         onClick={() => handleEdit(c.id)}
                                     >
                                         Edit

@@ -123,7 +123,7 @@ const SideBar = () => {
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
                                 <li><Link to={"/admin/view-feature"}>View Feature Product</Link></li>
-                                <li><a>Add Feature Product</a></li>
+                                <li><Link to={"/admim/add-feature"}>Add Feature Product</Link></li>
                                 <li><a>View Ended Feature Product</a></li>
                             </ul>
                         </details>

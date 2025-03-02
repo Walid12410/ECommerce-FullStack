@@ -68,7 +68,7 @@ module.exports.loginCompanyUserController = asyncHandler(async (req, res) => {
     const { Password, ...userWithoutPassword } = user;
 
     res.status(200).json({  
-        message : "Login successful",
+        message : "Login successfully",
         user: userWithoutPassword,
         token
     });

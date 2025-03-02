@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { adminLogin, fetchUserAuth, loginUser, logoutUser, registerUser } from '../../api/authApi';
+import { adminLogin, fetchUserAuth, loginCompany, loginUser, logoutUser, registerUser } from '../../api/authApi';
 import toast from 'react-hot-toast';
 
 export const getUserAuth = createAsyncThunk(
@@ -14,7 +14,6 @@ export const getUserAuth = createAsyncThunk(
     }
 );
 
-
 export const checkLoginUser = createAsyncThunk(
     "auth/login",
     async ({ userData }, { rejectWithValue }) => {
@@ -28,7 +27,6 @@ export const checkLoginUser = createAsyncThunk(
         }
     }
 );
-
 
 export const checkRegisterUser = createAsyncThunk(
     "auth/register",
@@ -58,7 +56,6 @@ export const logOutAuth = createAsyncThunk(
     }
 );
 
-
 export const checkAdminLogin = createAsyncThunk(
     "auth/adminLogin",
     async({userData}, {rejectWithValue}) => {
@@ -73,6 +70,20 @@ export const checkAdminLogin = createAsyncThunk(
     }
 )
 
+export const checkCompanyLogin = createAsyncThunk(
+    "auth/loginCompany",
+    async({userData}, {rejectWithValue}) => {
+        try {
+            const data = await loginCompany(userData);
+            toast.success("Login successfully");
+            return data;
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response?.data?.message || "Error fetch data");
+            return rejectWithValue((error.response?.data?.message || "Error fetch data"));
+        }
+    }
+)
 
 const authSlice = createSlice({
     name: "auth",
@@ -82,6 +93,8 @@ const authSlice = createSlice({
         isSiggingUp: false,
         successRegister: false,
         isAdminLoggingIn : false,
+        authCompany: null,
+        isCompanyLoggingIn: false
     },
     reducers: {
         clearRegisterCheck: (state) => {
@@ -140,6 +153,18 @@ const authSlice = createSlice({
         builder
             .addCase(logOutAuth.fulfilled, (state) => {
                 state.authUser = null;
+            })
+        // login company
+        builder
+            .addCase(checkCompanyLogin.pending,(state) => {
+                state.isCompanyLoggingIn = true;
+            })
+            .addCase(checkCompanyLogin.fulfilled,(state, action)=> {
+                state.isCompanyLoggingIn = false;
+                state.authCompany = action.payload.user;
+            })
+            .addCase(checkCompanyLogin.rejected,(state)=> {
+                state.isCompanyLoggingIn = false;
             })
     }
 });

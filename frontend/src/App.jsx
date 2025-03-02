@@ -15,7 +15,6 @@ import { getUserAuth } from "./redux/slices/authSlice";
 import { Toaster } from "react-hot-toast";
 import OfferPage from "./pages/OfferPage/OfferPage";
 import BottomNavBar from "./components/BottomNavBar";
-import AdminLoginPage from "./pages/AdminPages/auth/LoginPage";
 import AdminDashBoardPage from "./pages/AdminPages/Dashboard/AdminDashBoardPage";
 import ViewUserPage from "./pages/AdminPages/User/ViewUserPage";
 import AddUserPage from "./pages/AdminPages/User/AddUserPage";
@@ -25,6 +24,8 @@ import ViewColorPage from "./pages/AdminPages/Color/ViewColorPage";
 import ViewProductPage from "./pages/AdminPages/Product/ViewProductPage";
 import ViewCategoryPage from "./pages/AdminPages/Category/ViewCategoryPage";
 import ViewFeaturePage from "./pages/AdminPages/Feature/ViewFeaturePage";
+import AdminLoginPage from "./pages/AdminPages/auth/LoginPage";
+import AddFeaturePage from "./pages/AdminPages/Feature/AddFeaturePage";
 
 
 const App = () => {
@@ -67,6 +68,7 @@ const App = () => {
         <Route path="/admin/view-product" element={<ViewProductPage />} />
         <Route path="/admin/view-category" element={<ViewCategoryPage />} />
         <Route path="/admin/view-feature" element={<ViewFeaturePage />} />
+        <Route path="/admin/add-feature" element={<AddFeaturePage />} />
 
       </Routes>
       {(!authUser || (authUser && !authUser.IsAdmin)) && (
