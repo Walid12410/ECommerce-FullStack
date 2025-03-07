@@ -57,7 +57,7 @@ const App = () => {
         <Route path="/company/:id" element={<CompanyDetailsPage />} />
         <Route path="/offer" element={<OfferPage />} />
         
-        {/** Admin and company controll */}
+        {/** Admin Pages */}
         <Route path="/admin" element={<AdminLoginPage />} />
         <Route path="/admin/dashboard" element={<AdminDashBoardPage />} />
         <Route path="/admin/view-user" element={<ViewUserPage />} />
@@ -69,6 +69,11 @@ const App = () => {
         <Route path="/admin/view-category" element={<ViewCategoryPage />} />
         <Route path="/admin/view-feature" element={<ViewFeaturePage />} />
         <Route path="/admin/add-feature" element={<AddFeaturePage />} />
+
+        {/** Company Pages */}
+        <Route path="/company/dashboard" element={<AdminDashBoardPage />} />
+        <Route path="/company/view-company" element={<ViewCompanyPage />} />
+        <Route path="/company/view-product" element={<ViewProductPage />} />
 
       </Routes>
       {(!authUser || (authUser && !authUser.IsAdmin)) && (

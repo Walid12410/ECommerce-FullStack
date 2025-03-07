@@ -161,7 +161,7 @@ const authSlice = createSlice({
             })
             .addCase(checkCompanyLogin.fulfilled,(state, action)=> {
                 state.isCompanyLoggingIn = false;
-                state.authCompany = action.payload.user;
+                state.authCompany = action.payload;
             })
             .addCase(checkCompanyLogin.rejected,(state)=> {
                 state.isCompanyLoggingIn = false;
