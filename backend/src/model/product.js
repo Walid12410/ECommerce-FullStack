@@ -122,6 +122,27 @@ const productModel = {
         }
     },
 
+    async searchProducts(query) {
+        try {
+            const pool = await poolPromise();
+    
+            const result = await pool.request()
+                .input('query', sql.NVarChar, `%${query}%`)
+                .query(`
+                    SELECT * 
+                    FROM ProductDetailsVW
+                    WHERE ProductName LIKE @query 
+                       OR ProductDesc LIKE @query
+                `);
+    
+            return result.recordset;
+        } catch (error) {
+            console.log("Error searching products: ", error);
+            throw error;
+        }
+    },
+    
+
     async createProduct(product) {
         try {
             const pool = await poolPromise();

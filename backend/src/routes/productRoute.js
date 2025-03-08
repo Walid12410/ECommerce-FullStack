@@ -3,7 +3,8 @@ const { createProductController,
     getOneProductController,
     updateProductController,
     updateProductImageController,
-    countProductsController
+    countProductsController,
+    searchProductController
 } = require("../controllers/productController");
 const verifyCompanyToken = require("../middlewares/checkCompanyToken");
 const photoUpload = require("../middlewares/photoStorage");
@@ -12,6 +13,10 @@ const router = require("express").Router();
 
 // api/product/count
 router.route("/count").get(countProductsController);
+
+
+// api/product/search
+router.route("/search").get(searchProductController);
 
 // api/product
 router.route("/")

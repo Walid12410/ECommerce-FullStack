@@ -8,9 +8,13 @@ import {
     LayoutDashboard,
     Menu
 } from "lucide-react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const SideBar = () => {
+
+    const { authCompany } = useSelector((state)=> state.auth);
+
     return (
         <div className="drawer">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -28,7 +32,7 @@ const SideBar = () => {
                             <LayoutDashboard size={20} /> Dashboard
                         </Link>
                     </li>
-                    <li className="mb-2">
+                    {!authCompany && <li className="mb-2">
                         <details>
                             <summary className="cursor-pointer font-semibold flex items-center gap-2">
                                 <PersonStanding size={20} /> User
@@ -39,8 +43,8 @@ const SideBar = () => {
                             </ul>
                         </details>
                     </li>
-
-                    <li className="mb-2">
+                    }
+                    {!authCompany &&<li className="mb-2">
                         <details>
                             <summary className="cursor-pointer font-semibold flex items-center gap-2">
                                 <Package size={20} /> Brand
@@ -51,8 +55,8 @@ const SideBar = () => {
                             </ul>
                         </details>
                     </li>
-
-                    <li className="mb-2">
+                    }
+                    {!authCompany && <li className="mb-2">
                         <details>
                             <summary className="cursor-pointer font-semibold flex items-center gap-2">
                                 <Building size={20} /> Company
@@ -64,8 +68,8 @@ const SideBar = () => {
                             </ul>
                         </details>
                     </li>
-
-                    <li className="mb-2">
+                    }
+                    {!authCompany && <li className="mb-2">
                         <details>
                             <summary className="cursor-pointer font-semibold flex items-center gap-2">
                                 <List size={20} /> Category
@@ -77,7 +81,7 @@ const SideBar = () => {
                             </ul>
                         </details>
                     </li>
-
+                    }
                     <li className="mb-2">
                         <details>
                             <summary className="cursor-pointer font-semibold flex items-center gap-2">
@@ -85,7 +89,6 @@ const SideBar = () => {
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
                                 <li><Link to={"/admin/view-product"}>View Product</Link></li>
-                                <li><a>Add Product</a></li>
                             </ul>
                         </details>
                     </li>
@@ -97,7 +100,6 @@ const SideBar = () => {
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
                                 <li><a>View Offer</a></li>
-                                <li><a>Add Offer</a></li>
                                 <li><a>View ended Offer</a></li>
                             </ul>
                         </details>
@@ -110,7 +112,6 @@ const SideBar = () => {
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
                                 <li><a>View Coupons</a></li>
-                                <li><a>Add Coupons</a></li>
                                 <li><a>View Ended Coupons</a></li>
                             </ul>
                         </details>
@@ -122,7 +123,7 @@ const SideBar = () => {
                                 <Star size={20} /> Feature Product
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
-                                <li><Link to={"/admin/view-feature"}>View Feature Product</Link></li>
+                                <li><Link to={"//admin/add-feature"}>View Feature Product</Link></li>
                                 <li><Link to={"/admim/add-feature"}>Add Feature Product</Link></li>
                                 <li><a>View Ended Feature Product</a></li>
                             </ul>
@@ -136,7 +137,6 @@ const SideBar = () => {
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
                                 <li><a>View Order</a></li>
-                                <li><a>Add Order</a></li>
                             </ul>
                         </details>
                     </li>
@@ -158,7 +158,6 @@ const SideBar = () => {
                     <li className="mb-2">
                         <Link to={"/admin/view-color"}> <Palette size={20} /> Color</Link>
                     </li>
-
 
                 </ul>
             </div>

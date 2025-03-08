@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { checkAdminLogin, checkCompanyLogin } from "../../../redux/slices/authSlice";
+import { checkAdminLogin } from "../../../redux/slices/authSlice";
 
 const AdminLoginPage = () => {
   const dispatch = useDispatch();
@@ -10,9 +10,8 @@ const AdminLoginPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("admin"); // Default to admin
 
-  const { isAdminLoggingIn, isCompanyLoggingIn, authUser, authCompany } = useSelector((state) => state.auth);
+  const { isAdminLoggingIn, authUser } = useSelector((state) => state.auth);
 
   const validateForm = () => {
     if (!email.trim()) return toast.error("Email is required");
@@ -30,7 +29,7 @@ const AdminLoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isAdminLoggingIn || isCompanyLoggingIn) return;
+    if (isAdminLoggingIn) return;
     if (!validateForm()) return;
 
     const data = {
@@ -38,21 +37,15 @@ const AdminLoginPage = () => {
       Password: password,
     };
 
-    if (role === "admin") {
       dispatch(checkAdminLogin({ userData: data }));
-    } else {
-      dispatch(checkCompanyLogin({ userData: data }));
-    }
   };
 
   useEffect(() => {
     if (authUser && authUser.IsAdmin === true) {
       navigate("/admin/dashboard");
     }
-    if (authCompany) {
-      navigate("/company/dashboard");
-    }
-  }, [authUser, authCompany]);
+
+  }, [authUser]);
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -60,18 +53,6 @@ const AdminLoginPage = () => {
         <h2 className="text-3xl font-bold text-center mb-6">Direct Admin</h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-          <div className="form-control">
-            <label className="label font-medium">Role</label>
-            <select
-              className="select select-bordered w-full"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            >
-              <option value="admin">Admin</option>
-              <option value="company">Company</option>
-            </select>
-          </div>
-
           <div className="form-control">
             <label className="label font-medium">Email</label>
             <input
@@ -97,7 +78,7 @@ const AdminLoginPage = () => {
           </div>
 
           <button type="submit" className="btn w-full">
-            {isAdminLoggingIn || isCompanyLoggingIn ? "Checking..." : "Sign In"}
+            {isAdminLoggingIn ? "Checking..." : "Sign In"}
           </button>
         </form>
       </div>

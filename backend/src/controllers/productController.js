@@ -250,9 +250,36 @@ module.exports.updateProductImageController = asyncHandler(async (req, res) => {
 });
 
 
+
+/**
+ * @desc get the number of the products
+ * @Route /api/product/count
+ * @method get
+ * @access public
+*/
 module.exports.countProductsController = asyncHandler(async(req,res)=>{
     const productCount = await productModel.countProduct();
     return res.status(200).json(productCount);
 });
 
+
+/**
+ * @desc search for product
+ * @Route /api/product/search
+ * @method get
+ * @access public
+*/
+module.exports.searchProductController = asyncHandler(async(req,res)=>{
+    const query = req.query.name;
+
+    const products = await productModel.searchProducts(query);
+    return res.status(200).json(products); 
+});
+
+
+
+
+
+
 //@TODO: delete product controller(CHECK THE OFFER , ORDER ETC...)
+

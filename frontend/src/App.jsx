@@ -26,6 +26,7 @@ import ViewCategoryPage from "./pages/AdminPages/Category/ViewCategoryPage";
 import ViewFeaturePage from "./pages/AdminPages/Feature/ViewFeaturePage";
 import AdminLoginPage from "./pages/AdminPages/auth/LoginPage";
 import AddFeaturePage from "./pages/AdminPages/Feature/AddFeaturePage";
+import CompanyDashBoardPage from "./pages/AdminPages/Dashboard/CompanyDashBoardPage";
 
 
 const App = () => {
@@ -71,7 +72,7 @@ const App = () => {
         <Route path="/admin/add-feature" element={<AddFeaturePage />} />
 
         {/** Company Pages */}
-        <Route path="/company/dashboard" element={<AdminDashBoardPage />} />
+        <Route path="/company/dashboard" element={<CompanyDashBoardPage />} />
         <Route path="/company/view-company" element={<ViewCompanyPage />} />
         <Route path="/company/view-product" element={<ViewProductPage />} />
 
