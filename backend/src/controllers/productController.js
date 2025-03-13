@@ -7,6 +7,7 @@ const { cloudinaryUploadImage, cloudinaryRemoveImage } = require("../utils/cloud
 const productModel = require("../model/product");
 const fs = require("fs");
 const path = require("path");
+const productSizeModel = require("../model/productSize");
 
 /**
  * @desc create product
@@ -128,8 +129,10 @@ module.exports.getOneProductController = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: "Product id is required" });
     }
 
-    const result = await productModel.getOneProduct(id);
-    return res.status(200).json(result);
+    const product = await productModel.getOneProduct(id);
+    const productSize = await productSizeModel.getAllProductSize(id);
+
+    return res.status(200).json(product, productSize);
 });
 
 
@@ -275,9 +278,6 @@ module.exports.searchProductController = asyncHandler(async(req,res)=>{
     const products = await productModel.searchProducts(query);
     return res.status(200).json(products); 
 });
-
-
-
 
 
 
