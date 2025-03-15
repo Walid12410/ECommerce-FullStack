@@ -3,24 +3,6 @@ const { validationCreateProductSize, validationUpdateProductSize } = require("..
 const productSizeModel = require("../model/productSize");
 
 
-
-/**
- * @desc create product size
- * @Route /api/product-size
- * @method get
- * @access public
-*/
-module.exports.getAllProductSizeController = asyncHandler(async (req,res)=> {
-    const result = await productSizeModel.getAllProductSize();
-
-    if(result.length === 0){
-        return res.status(404).json({message: "Product size not found"});
-    }
-
-    return res.status(200).json(result);
-});
-
-
 /**
  * @desc create product size
  * @Route /api/product-size

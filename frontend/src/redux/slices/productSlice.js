@@ -4,6 +4,7 @@ import { fetchBrandProduct,
     fetchCountProductApi,
     fetchGenderProduct,
     fetchProduct,
+    fetchProductDetailsApi,
     fetchSubCategoryProduct
 } from '../../api/productApi';
 import toast from 'react-hot-toast';
@@ -97,6 +98,20 @@ export const getProductCount = createAsyncThunk(
     }
 );
 
+export const getProductDetails = createAsyncThunk(
+    "product/fetchProductDetails",
+    async ({id}, { rejectWithValue }) => {
+        try {
+            const data = await fetchProductDetailsApi(id);
+            return data;
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Error fetching data");
+            return rejectWithValue(error.response?.data?.message || "Error fetching data");
+        }
+    }
+);
+
+
 
 const productSlice = createSlice({
     name: "product",
@@ -126,7 +141,10 @@ const productSlice = createSlice({
         companyProduct: [],
         loadingCompanyProduct: false,
         errorCompanyProduct: null,
-        hasMoreDataCompanyProduct: true
+        hasMoreDataCompanyProduct: true,
+        // product Details
+        loadingProductDetails: false,
+        productDetails: null
     },
     reducers: {
         clearSubCategoryProduct: (state) => {
@@ -276,6 +294,19 @@ const productSlice = createSlice({
             .addCase(getCompanyProduct.rejected, (state, action) => {
                 state.loadingCompanyProduct = false;
                 state.errorCompanyProduct = action.payload || "Failed to fetch product";
+            })
+        // Product Details
+        builder
+            .addCase(getProductDetails.pending, (state) => {
+                state.loadingProductDetails = true;
+            })
+            .addCase(getProductDetails.fulfilled, (state, action) => {
+                state.loadingProductDetails = false;
+                state.productDetails = action.payload;
+            })
+            .addCase(getProductDetails.rejected, (state) => {
+                state.loadingProductDetails = false;
+                state.productDetails = null;
             })
     }
 });

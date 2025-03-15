@@ -24,7 +24,7 @@ const productSizeModel = {
 
             const result = await pool.request()
                 .input('ProductNo', sql.Int, data.ProductNo)
-                .input('SizeValue', sql.NVarChar, data.Size)
+                .input('SizeValue', sql.NVarChar, data.SizeValue)
                 .input('Quantity', sql.Int, data.Quantity)
                 .query(`
                     IF NOT EXISTS (SELECT 1 FROM Product WHERE ProductNo = @ProductNo)

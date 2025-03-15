@@ -37,3 +37,9 @@ export const fetchCompanyProductApi = async(companyId,page,limit)=> {
     const response = await request.get(`/api/product?page=${page}&limit=${limit}&CompanyNo=${companyId}`);
     return response.data;
 }
+
+
+export const fetchProductDetailsApi = async(id) => {
+    const response = await request.get(`/api/product/${id}`);
+    return response.data;
+}

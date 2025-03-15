@@ -41,10 +41,10 @@ app.use("/api/brand",require("./routes/brandRoute"));
 app.use("/api/color",require("./routes/colorRoute"));
 app.use("/api/gender",require("./routes/genderRoute"));
 app.use("/api/product",require("./routes/productRoute"));
+app.use("/api/product-size",require("./routes/productSizeRoute"));
 app.use("/api/banner",require("./routes/bannerRoute"));
 app.use("/api/feature",require("./routes/featureRoute"));
 app.use("/api/offer",require("./routes/offerRoute"));
-
 
 // Error Handler Middleware
 app.use(notFound);

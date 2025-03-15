@@ -27,6 +27,7 @@ import ViewFeaturePage from "./pages/AdminPages/Feature/ViewFeaturePage";
 import AdminLoginPage from "./pages/AdminPages/auth/LoginPage";
 import AddFeaturePage from "./pages/AdminPages/Feature/AddFeaturePage";
 import CompanyDashBoardPage from "./pages/AdminPages/Dashboard/CompanyDashBoardPage";
+import ProductDetailPage from "./pages/ProductDetailsPage/ProductDetails";
 
 
 const App = () => {
@@ -57,7 +58,8 @@ const App = () => {
         <Route path="/company" element={<CompanyPage />} />
         <Route path="/company/:id" element={<CompanyDetailsPage />} />
         <Route path="/offer" element={<OfferPage />} />
-        
+        <Route path="/product/:id" element={<ProductDetailPage />} />
+
         {/** Admin Pages */}
         <Route path="/admin" element={<AdminLoginPage />} />
         <Route path="/admin/dashboard" element={<AdminDashBoardPage />} />

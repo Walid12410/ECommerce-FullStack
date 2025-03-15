@@ -132,7 +132,7 @@ module.exports.getOneProductController = asyncHandler(async (req, res) => {
     const product = await productModel.getOneProduct(id);
     const productSize = await productSizeModel.getAllProductSize(id);
 
-    return res.status(200).json(product, productSize);
+    return res.status(200).json({product, productSize});
 });
 
 

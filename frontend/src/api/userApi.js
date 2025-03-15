@@ -10,3 +10,6 @@ export const fetchUserApi = async(page,limit) => {
     const response = await request.get(`/api/user?page=${page}&limit=${limit}`);
     return response.data;
 }
+
+
+

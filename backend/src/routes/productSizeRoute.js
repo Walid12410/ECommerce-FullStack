@@ -10,8 +10,7 @@ const router = require("express").Router();
 
 // api/product-size
 router.route("/")
-    .post(verifyCompanyToken, createProductSizeController)
-    .get(getAllProductSizeController);
+    .post(verifyCompanyToken, createProductSizeController);
 
 // api/product-size/:id
 router.route("/:id")
