@@ -41,7 +41,10 @@ const NavBar = () => {
                         onClick={() => dispatch(setTheme("dark"))}
                         className="w-6 1-10 cursor-pointer" />
                 )}
-                <ShoppingBag className="w-6 h-10 cursor-pointer" />
+
+                <Link to={authUser ? "/cart" : "/login"} >
+                    <ShoppingBag className="w-6 h-10 cursor-pointer" />
+                </Link>
 
                 {/* User Icon & Dropdown */}
                 <div className="relative">
@@ -71,7 +74,7 @@ const NavBar = () => {
                                         My Orders
                                     </Link>
                                     <Link
-                                        onClick={()=> dispatch(logOutAuth())}
+                                        onClick={() => dispatch(logOutAuth())}
                                         className="block px-4 py-2 font-bold text-sm "
                                     >
                                         Log Out

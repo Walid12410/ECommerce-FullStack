@@ -11,6 +11,8 @@ import offerReducer from './slices/offerSlice';
 import themeReducer from './slices/themeSlice';
 import userReducer from './slices/userSlice';
 import colorReducer from './slices/colorSlice';
+import cartReducer from './slices/cartSlice';
+
 
 const store = configureStore({
     reducer : {
@@ -25,7 +27,8 @@ const store = configureStore({
         offer: offerReducer,
         theme: themeReducer,
         user: userReducer,
-        color: colorReducer
+        color: colorReducer,
+        cart: cartReducer
     }
 });
 
