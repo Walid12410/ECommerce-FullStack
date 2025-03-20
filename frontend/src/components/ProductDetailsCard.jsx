@@ -1,3 +1,7 @@
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart } from "../redux/slices/cartSlice";
+import toast from "react-hot-toast";
+
 const ProductDetailsCard = ({
     productDetails,
     handleQuantityChange,
@@ -6,6 +10,23 @@ const ProductDetailsCard = ({
     selectedSize,
     quantity
 }) => {
+
+    const dispatch = useDispatch();
+
+    const { cart } = useSelector(state => state.cart);
+    const isProductFound = cart.some(item => item.ProductNo === productDetails.ProductNo);
+
+
+    const handleRemoveFromCart = () => {
+        if (isProductFound) {
+            dispatch(removeFromCart(productDetails.product.ProductNo));
+            toast.success("Product removed from cart");
+        } else {
+            toast.error("Product not found in cart");
+        }
+    };
+
+
     return (
         <div >
             <div className="flex flex-col md:flex-row gap-8">
@@ -65,19 +86,23 @@ const ProductDetailsCard = ({
                     <div className="mb-4">
                         <h3 className="font-medium mb-2">Select Size:</h3>
                         <div className="flex flex-wrap gap-2">
-                            {productDetails.productSize.map((size) => (
-                                <button
-                                    key={size.ProductSizeNo}
-                                    className={`px-4 py-2 border rounded ${selectedSize.size === size.SizeValue
-                                        ? 'border-primary bg-primary bg-opacity-10 text-primary'
-                                        : 'border-base-300 hover:border-base-content'
-                                        }`}
-                                    onClick={() => handleSizeChange(size.SizeValue, size.Quantity)}
-                                >
-                                    {size.SizeValue}
-                                    <span className="text-xs opacity-70 ml-1">({size.Quantity} available)</span>
-                                </button>
-                            ))}
+                            {productDetails.productSize && productDetails.productSize.length > 0 ? (
+                                productDetails.productSize.map((size) => (
+                                    <button
+                                        key={size.ProductSizeNo}
+                                        className={`px-4 py-2 border rounded ${selectedSize.size === size.SizeValue
+                                                ? 'border-primary bg-primary bg-opacity-10 text-primary'
+                                                : 'border-base-300 hover:border-base-content'
+                                            }`}
+                                        onClick={() => handleSizeChange(size.SizeValue, size.Quantity)}
+                                    >
+                                        {size.SizeValue}
+                                        <span className="text-xs opacity-70 ml-1">({size.Quantity} available)</span>
+                                    </button>
+                                ))
+                            ) : (
+                                <p className="text-sm text-gray-500 italic">No sizes added yet</p>
+                            )}
                         </div>
                     </div>
 
@@ -87,6 +112,7 @@ const ProductDetailsCard = ({
                             <button
                                 className="px-3 py-1 border border-base-300 rounded-l"
                                 onClick={() => handleQuantityChange(-1)}
+                                disabled={!productDetails.productSize || productDetails.productSize.length === 0}
                             >
                                 -
                             </button>
@@ -95,11 +121,13 @@ const ProductDetailsCard = ({
                                 className="w-16 px-2 py-1 text-center border-y border-base-300 bg-base-100"
                                 value={quantity}
                                 min="1"
+                                disabled={!productDetails.productSize || productDetails.productSize.length === 0}
                                 readOnly
                             />
                             <button
                                 className="px-3 py-1 border border-base-300 rounded-r"
                                 onClick={() => handleQuantityChange(+1)}
+                                disabled={!productDetails.productSize || productDetails.productSize.length === 0}
                             >
                                 +
                             </button>
@@ -109,9 +137,10 @@ const ProductDetailsCard = ({
                     <div className="mt-auto">
                         <button
                             className="w-full btn btn-primary py-3 px-6 rounded-lg font-medium"
-                            onClick={handleAddToCart}
+                            onClick={isProductFound ? handleRemoveFromCart : handleAddToCart}
+                            disabled={!productDetails.productSize || productDetails.productSize.length === 0}
                         >
-                            Add to Cart
+                            {isProductFound ? "Remove From Cart" : "Add To Cart"}
                         </button>
                     </div>
                 </div>

@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import NavBar from "../../components/Navbar";
 import CartCard from "../../components/CartCard";
+import { clearCart, removeFromCart } from "../../redux/slices/cartSlice";
+import toast from "react-hot-toast";
 
 const CartPage = () => {
 
@@ -8,11 +10,13 @@ const CartPage = () => {
   const { cart } = useSelector(state => state.cart);
 
   const handleRemoveFromCart = (productNo) => {
-    //dispatch({ type: 'removeFromCart', payload: productNo });
+    toast.success("Product remove from cart");
+    dispatch(removeFromCart(productNo));
   };
 
   const handleClearCart = () => {
-  //  dispatch({ type: 'ClearAll' });
+    toast.success("Products remove from cart");
+    dispatch(clearCart());
   };
 
   const calculateTotal = () => {
