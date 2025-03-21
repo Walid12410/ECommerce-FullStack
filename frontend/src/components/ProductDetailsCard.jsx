@@ -91,8 +91,8 @@ const ProductDetailsCard = ({
                                     <button
                                         key={size.ProductSizeNo}
                                         className={`px-4 py-2 border rounded ${selectedSize.size === size.SizeValue
-                                                ? 'border-primary bg-primary bg-opacity-10 text-primary'
-                                                : 'border-base-300 hover:border-base-content'
+                                            ? 'border-primary bg-primary bg-opacity-10 text-primary'
+                                            : 'border-base-300 hover:border-base-content'
                                             }`}
                                         onClick={() => handleSizeChange(size.SizeValue, size.Quantity)}
                                     >
@@ -177,7 +177,6 @@ const ProductDetailsCard = ({
                 </div>
             </div>
         </div>
-
     );
 }
 

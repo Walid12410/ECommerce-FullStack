@@ -29,6 +29,7 @@ import AddFeaturePage from "./pages/AdminPages/Feature/AddFeaturePage";
 import CompanyDashBoardPage from "./pages/AdminPages/Dashboard/CompanyDashBoardPage";
 import ProductDetailPage from "./pages/ProductDetailsPage/ProductDetails";
 import CartPage from "./pages/CartPage/CartPage";
+import ProfileUpdatePage from "./pages/EditProfilePage/EditProfilePage";
 
 
 const App = () => {
@@ -61,6 +62,7 @@ const App = () => {
         <Route path="/offer" element={<OfferPage />} />
         <Route path="/product/:id" element={<ProductDetailPage />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/profile" element={<ProfileUpdatePage />} />
 
         {/** Admin Pages */}
         <Route path="/admin" element={<AdminLoginPage />} />

@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SideBar from "./SideBar";
 import { Moon, Sun } from "lucide-react";
 import { setTheme } from "../redux/slices/themeSlice";
+import { Link } from "react-router-dom";
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const Header = () => {
             </div>
             <div className="flex-none gap-2">
 
-            {theme === "dark" ? (
+                {theme === "dark" ? (
                     <Sun
                         onClick={() => dispatch(setTheme("light"))}
                         className="w-10 h-15 cursor-pointer" />
@@ -40,10 +41,11 @@ const Header = () => {
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                         <li>
-                            <a className="justify-between">
+                            <Link
+                                className="justify-between">
                                 Profile
                                 <span className="badge">New</span>
-                            </a>
+                            </Link>
                         </li>
                         <li><a>Settings</a></li>
                         <li><a>Logout</a></li>

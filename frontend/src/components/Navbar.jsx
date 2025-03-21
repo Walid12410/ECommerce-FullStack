@@ -62,7 +62,7 @@ const NavBar = () => {
                                     </p>
                                     <hr className="my-1" />
                                     <Link
-                                        to="/"
+                                        to="/profile"
                                         className="block px-4 py-2 font-bold text-sm"
                                     >
                                         Edit Profile
