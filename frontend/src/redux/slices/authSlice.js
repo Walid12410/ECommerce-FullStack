@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { adminLogin, fetchUserAuth, loginCompany, loginUser, logoutUser, registerUser } from '../../api/authApi';
 import toast from 'react-hot-toast';
+import { updateUserApi, updateUserPasswordApi } from '../../api/userApi';
 
 export const getUserAuth = createAsyncThunk(
     "auth/checkUser",
@@ -58,7 +59,7 @@ export const logOutAuth = createAsyncThunk(
 
 export const checkAdminLogin = createAsyncThunk(
     "auth/adminLogin",
-    async({userData}, {rejectWithValue}) => {
+    async ({ userData }, { rejectWithValue }) => {
         try {
             const data = await adminLogin(userData);
             toast.success("Login successfully");
@@ -68,11 +69,28 @@ export const checkAdminLogin = createAsyncThunk(
             return rejectWithValue((error.response?.data?.message || "Error fetch data"));
         }
     }
-)
+);
+
+
+export const updateUser = createAsyncThunk(
+    "user/updateUser",
+    async ({ userData, id }, { rejectWithValue }) => {
+        try {
+            const data = await updateUserApi(userData, id);
+            toast.success("User update successfully");
+            return data;
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response?.data?.message || "Error create new user");
+            return rejectWithValue((error.response?.data?.message || "Error fetch data"));
+        }
+    }
+);
+
 
 export const checkCompanyLogin = createAsyncThunk(
     "auth/loginCompany",
-    async({userData}, {rejectWithValue}) => {
+    async ({ userData }, { rejectWithValue }) => {
         try {
             const data = await loginCompany(userData);
             toast.success("Login successfully");
@@ -85,6 +103,24 @@ export const checkCompanyLogin = createAsyncThunk(
     }
 )
 
+
+export const updateUserPassword = createAsyncThunk(
+    "user/updateUserPassword",
+    async ({ userData }, { rejectWithValue }) => {
+        try {
+            const data = await updateUserPasswordApi(userData);
+            toast.success("Password Change successfully");
+            return data;
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response?.data?.message || "Error create new user");
+            return rejectWithValue((error.response?.data?.message || "Error fetch data"));
+        }
+    }
+);
+
+
+
 const authSlice = createSlice({
     name: "auth",
     initialState: {
@@ -92,13 +128,23 @@ const authSlice = createSlice({
         isLoggingIn: false,
         isSiggingUp: false,
         successRegister: false,
-        isAdminLoggingIn : false,
+        isAdminLoggingIn: false,
         authCompany: null,
-        isCompanyLoggingIn: false
+        isCompanyLoggingIn: false,
+        loadingUpdateUser: false,
+        isUserUpdated: true,
+        loadingChangePassword: false,
+        isPasswordUpdated: false
     },
     reducers: {
         clearRegisterCheck: (state) => {
             state.successRegister = false;
+        },
+        clearUserUpdated: (state) => {
+            state.isUserUpdated = false;
+        },
+        clearChangePassword: (state) => {
+            state.loadingChangePassword = false;
         }
     },
     extraReducers: (builder) => {
@@ -156,18 +202,47 @@ const authSlice = createSlice({
             })
         // login company
         builder
-            .addCase(checkCompanyLogin.pending,(state) => {
+            .addCase(checkCompanyLogin.pending, (state) => {
                 state.isCompanyLoggingIn = true;
             })
-            .addCase(checkCompanyLogin.fulfilled,(state, action)=> {
+            .addCase(checkCompanyLogin.fulfilled, (state, action) => {
                 state.isCompanyLoggingIn = false;
                 state.authCompany = action.payload;
             })
-            .addCase(checkCompanyLogin.rejected,(state)=> {
+            .addCase(checkCompanyLogin.rejected, (state) => {
                 state.isCompanyLoggingIn = false;
             })
+        // update user profile
+        builder
+            .addCase(updateUser.pending, (state) => {
+                state.loadingUpdateUser = true;
+                state.isUserUpdated = false;
+            })
+            .addCase(updateUser.fulfilled, (state, action) => {
+                state.authUser = action.payload.user;
+                state.loadingUpdateUser = false;
+                state.isUserUpdated = true;
+            })
+            .addCase(updateUser.rejected, (state) => {
+                state.loadingUpdateUser = false;
+                state.isUserUpdated = false;
+            });
+        // update user password
+        builder
+            .addCase(updateUserPassword.pending, (state) => {
+                state.loadingChangePassword = true;
+                state.isPasswordUpdated = false;
+            })
+            .addCase(updateUserPassword.fulfilled, (state, action) => {
+                state.loadingChangePassword = false;
+                state.isPasswordUpdated = true;
+            })
+            .addCase(updateUserPassword.rejected, (state) => {
+                state.loadingChangePassword = false;
+                state.isPasswordUpdated = false;
+            });
     }
 });
 
-export const { clearRegisterCheck } = authSlice.actions;
+export const { clearRegisterCheck, clearUserUpdated, clearChangePassword } = authSlice.actions;
 export default authSlice.reducer;

@@ -44,6 +44,7 @@ export const createNewUser = createAsyncThunk(
     }
 );
 
+
 const userSlice = createSlice({
     name: "users",
     initialState: {
@@ -52,12 +53,13 @@ const userSlice = createSlice({
         errorUsers: null,
         userCount: 1,
         loadingCreateUser: false,
-        successCreate: false
+        successCreate: false,
     },
     reducers: {
         clearCreateUser: (state) => {
             state.successCreate = false;
-        }
+        },
+
     },
     extraReducers: (builder) => {
         builder

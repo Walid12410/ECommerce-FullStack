@@ -1,20 +1,21 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { getGender } from "../../redux/slices/genderSlice";
 import { debounce } from "lodash";
 import { clearGenderProduct, getGenderProduct } from "../../redux/slices/productSlice";
 import { Loader2, Package } from "lucide-react";
 import CollectionProductCard from "../../components/CollectionCard";
-import { useParams } from "react-router-dom";
 import NavBar from "../../components/Navbar";
 
 const ProductGenderPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { id } = useParams();
     const { gender, loadingGender } = useSelector((state) => state.gender);
     const { hasMoreDataGenderProduct, loadingGenderProduct, genderProduct } = useSelector((state) => state.product);
 
-    const { id } = useParams();
-    const [selectedGender, setSelectedGender] = useState(id != 0 ? id : null);
+    const [selectedGender, setSelectedGender] = useState(id !== '0' ? id : null);
     const [page, setPage] = useState(1);
 
     // Run only once on mount
@@ -38,12 +39,16 @@ const ProductGenderPage = () => {
     }, [page, dispatch]);
 
     // Handle gender selection
-    const handleGenderClick = (id) => {
-        setSelectedGender(id);
+    const handleGenderClick = (genderId) => {
+        // Update URL with the selected gender
+        navigate(`/collection/${genderId}`);
+        setSelectedGender(genderId);
     };
 
     // Show all products
     const handleProductShow = () => {
+        // Navigate to 0 for "All" category
+        navigate('/collection/0');
         setSelectedGender(null);
     };
 

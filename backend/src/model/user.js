@@ -54,6 +54,27 @@ const userModel = {
         }
     },
 
+    async updateUserPassword(data) {
+        try {
+            const pool = await poolPromise();
+    
+            // Execute the update query
+            const result = await pool.request()
+                .input('UserNo', sql.BigInt, data.UserNo)
+                .input('Password', sql.NVarChar, data.Password)
+                .query('UPDATE Users SET Password=@Password WHERE UserNo=@UserNo');
+    
+            // If no rows were affected, the user was not found or updated
+            if (result.rowsAffected[0] === 0) {
+                throw new Error('User not found or no changes made');
+            }
+    
+            return {success: true}; // Return the success message
+        } catch (error) {
+            console.error('Error updating user:', error);
+            throw error;  // Propagate the error
+        }
+    },
     async getUserById(id) {
         try {
             const pool = await poolPromise();

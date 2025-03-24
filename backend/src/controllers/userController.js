@@ -70,6 +70,41 @@ module.exports.updateUserProfileController = asyncHandler(async (req, res) => {
 });
 
 
+/**
+ * @desc change password
+ * @method put
+ * @access private ( only user himeself )
+*/
+module.exports.changePasswordController = asyncHandler(async (req, res) => {
+    const { error } = validationChangePassword(req.body);
+    if (error) {
+        return res.status(400).json({ message: error.details[0].message });
+    }
+
+    const user = await userModel.getUserById(req.user.UserNo);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(req.body.OldPassword, user.Password);
+    if (!isPasswordValid) {
+        return res.status(400).json({ message: "Incorrect old password" });
+    }
+
+    const hashedPassword = await bcrypt.hash(req.body.NewPassword, 10);
+    const data = {
+        UserNo: req.user.UserNo,
+        Password: hashedPassword,
+    };
+
+    const isUpdated = await userModel.updateUserPassword(data);
+    if(isUpdated.success){
+        res.status(200).json({ message: "Password updated successfully" });
+    }else{
+        res.status(500).json({ message: "Password not updated" });
+    }
+});
+
 
 /**
  * @desc count user 

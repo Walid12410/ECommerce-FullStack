@@ -1,16 +1,40 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import NavBar from '../../components/Navbar';
+import { clearUserUpdated, updateUser } from '../../redux/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const ProfileUpdatePage = () => {
+    const dispatch = useDispatch();
+    const navigation = useNavigate();
 
+    const { authUser,
+        loadingUpdateUser,
+        isUserUpdated,
+        loadingChangePassword,
+        isPasswordUpdated
+    } = useSelector((state) => state.auth);
 
-    const { authUser } = useSelector((state) => state.auth);
-
+    // Initialize with empty values to avoid the "undefined" error
     const [formData, setFormData] = useState({
-        fullName: authUser.UserName ?? "Unknown",
-        phoneNumber: authUser.PhoneNumber ?? "Unknown",
+        UserName: "",
+        PhoneNumber: "",
     });
+
+    const [formDataPassword, setFormDataPassword] = useState({
+        OldPassword: "",
+        NewPassword: "",
+    });
+
+    // Set form data when authUser is available
+    useEffect(() => {
+        if (authUser) {
+            setFormData({
+                UserName: authUser.UserName ?? "Unknown",
+                PhoneNumber: authUser.PhoneNumber ?? "Unknown",
+            });
+        }
+    }, [authUser]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -20,12 +44,33 @@ const ProfileUpdatePage = () => {
         });
     };
 
+    const handleInpuPasswordtChange = (e) => {
+        const { name, value } = e.target;
+        setFormDataPassword({
+            ...formDataPassword,
+            [name]: value,
+        });
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Here you would typically send the updated profile data to your API
-        console.log('Profile data submitted:', formData);
-        // Show success toast
+        if (authUser) {
+            dispatch(updateUser({ userData: formData, id: authUser.UserNo }));
+        }
     };
+
+    useEffect(() => {
+        if (isUserUpdated) {
+            if (authUser) {
+                setFormData({
+                    UserName: authUser.UserName ?? "Unknown",
+                    PhoneNumber: authUser.PhoneNumber ?? "Unknown",
+                });
+            }
+            dispatch(clearUserUpdated());
+            navigation('/profile');
+        }
+    }, [isUserUpdated, dispatch, navigation, authUser]);
 
     const handleChangePassword = () => {
         // Open the change password modal
@@ -47,8 +92,8 @@ const ProfileUpdatePage = () => {
                                 </label>
                                 <input
                                     type="text"
-                                    name="fullName"
-                                    value={formData.fullName}
+                                    name="UserName"
+                                    value={formData.UserName}
                                     onChange={handleInputChange}
                                     className="input input-bordered w-full"
                                     required
@@ -61,8 +106,8 @@ const ProfileUpdatePage = () => {
                                 </label>
                                 <input
                                     type="tel"
-                                    name="phoneNumber"
-                                    value={formData.phoneNumber}
+                                    name="PhoneNumber"
+                                    value={formData.PhoneNumber}
                                     onChange={handleInputChange}
                                     className="input input-bordered w-full"
                                     required
@@ -77,7 +122,7 @@ const ProfileUpdatePage = () => {
                                 >
                                     Change Password
                                 </button>
-                                <button type="submit" className="btn btn-primary">Save Changes</button>
+                                <button type="submit" className="btn btn-primary">{loadingUpdateUser ? "Updating..." : "Save Change"}</button>
                             </div>
                         </form>
                     </div>
@@ -93,13 +138,25 @@ const ProfileUpdatePage = () => {
                                 <label className="label">
                                     <span className="label-text">Current Password</span>
                                 </label>
-                                <input type="password" className="input input-bordered w-full" required />
+                                <input 
+                                type="password"
+                                name='OldPassword'
+                                value={formDataPassword.OldPassword}
+                                onChange={handleInpuPasswordtChange}
+                                className="input input-bordered w-full" 
+                                required />
                             </div>
                             <div className="form-control w-full mb-4">
                                 <label className="label">
                                     <span className="label-text">New Password</span>
                                 </label>
-                                <input type="password" className="input input-bordered w-full" required />
+                                <input 
+                                type="password"
+                                name='NewPassword'
+                                value={formDataPassword.NewPassword}
+                                onChange={handleInpuPasswordtChange}
+                                className="input input-bordered w-full"
+                                 required />
                             </div>
                             <div className="form-control w-full mb-6">
                                 <label className="label">
@@ -114,9 +171,7 @@ const ProfileUpdatePage = () => {
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
     );
 };
