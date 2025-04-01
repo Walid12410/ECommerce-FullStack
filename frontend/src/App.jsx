@@ -30,6 +30,8 @@ import CompanyDashBoardPage from "./pages/AdminPages/Dashboard/CompanyDashBoardP
 import ProductDetailPage from "./pages/ProductDetailsPage/ProductDetails";
 import CartPage from "./pages/CartPage/CartPage";
 import ProfileUpdatePage from "./pages/EditProfilePage/EditProfilePage";
+import AddCompanyPage from "./pages/AdminPages/Company/AddCompanyPage";
+import AddCategoryPage from "./pages/AdminPages/Category/AddCategoryPage";
 
 
 const App = () => {
@@ -71,11 +73,13 @@ const App = () => {
         <Route path="/admin/add-user" element={<AddUserPage />} />
         <Route path="/admin/view-brand" element={<ViewBrandPage />} />
         <Route path="/admin/view-company" element={<ViewCompanyPage />} />
+        <Route path="/admin/add-company" element={<AddCompanyPage />} />
         <Route path="/admin/view-color" element={<ViewColorPage />} />
         <Route path="/admin/view-product" element={<ViewProductPage />} />
         <Route path="/admin/view-category" element={<ViewCategoryPage />} />
         <Route path="/admin/view-feature" element={<ViewFeaturePage />} />
         <Route path="/admin/add-feature" element={<AddFeaturePage />} />
+        <Route path="/admin/add-category" element={<AddCategoryPage />} />
 
         {/** Company Pages */}
         <Route path="/company/dashboard" element={<CompanyDashBoardPage />} />

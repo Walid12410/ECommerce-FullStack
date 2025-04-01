@@ -63,7 +63,7 @@ const SideBar = () => {
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
                                 <li><Link to={"/admin/view-company"}>View Companies</Link></li>
-                                <li><a>Add Company</a></li>
+                                <li><Link to={"/admin/add-company"}>Add Company</Link></li>
                                 <li><a>Add User Company</a></li>
                             </ul>
                         </details>
@@ -76,7 +76,7 @@ const SideBar = () => {
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
                                 <li><Link to={"/admin/view-category"}>View Category</Link></li>
-                                <li><a>Add Category</a></li>
+                                <li><Link to={"/admin/add-category"}>Add Category</Link></li>
                                 <li><a>Add Subcategory</a></li>
                             </ul>
                         </details>
@@ -123,7 +123,7 @@ const SideBar = () => {
                                 <Star size={20} /> Feature Product
                             </summary>
                             <ul className="p-2 bg-base-300 rounded-lg">
-                                <li><Link to={"//admin/add-feature"}>View Feature Product</Link></li>
+                                <li><Link to={"/admin/view-feature"}>View Feature Product</Link></li>
                                 <li><Link to={"/admim/add-feature"}>Add Feature Product</Link></li>
                                 <li><a>View Ended Feature Product</a></li>
                             </ul>
