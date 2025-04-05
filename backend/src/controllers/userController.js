@@ -11,7 +11,7 @@ const userModel = require("../model/user");
 */
 module.exports.getAllUserController = asyncHandler(async (req, res) => {
     const { page, limit } = req.query;
-
+    
     let users;
 
     // Convert query parameters to numbers

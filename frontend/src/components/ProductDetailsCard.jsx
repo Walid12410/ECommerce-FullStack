@@ -12,10 +12,11 @@ const ProductDetailsCard = ({
 }) => {
 
     const dispatch = useDispatch();
-
     const { cart } = useSelector(state => state.cart);
-    const isProductFound = cart.some(item => item.ProductNo === productDetails.ProductNo);
-
+    const isProductFound = cart.some(item => 
+        item.product.ProductNo === productDetails.product.ProductNo && 
+        item.size.size === selectedSize?.size
+    );
 
     const handleRemoveFromCart = () => {
         if (isProductFound) {
@@ -25,7 +26,6 @@ const ProductDetailsCard = ({
             toast.error("Product not found in cart");
         }
     };
-
 
     return (
         <div >
@@ -90,18 +90,22 @@ const ProductDetailsCard = ({
                                 productDetails.productSize.map((size) => (
                                     <button
                                         key={size.ProductSizeNo}
-                                        className={`px-4 py-2 border rounded ${selectedSize.size === size.SizeValue
-                                            ? 'border-primary bg-primary bg-opacity-10 text-primary'
-                                            : 'border-base-300 hover:border-base-content'
-                                            }`}
-                                        onClick={() => handleSizeChange(size.SizeValue, size.Quantity)}
+                                        className={`px-4 py-2 border rounded ${
+                                            selectedSize?.size === size.SizeValue
+                                                ? 'border-primary bg-primary bg-opacity-10 text-primary'
+                                                : 'border-base-300 hover:border-base-content'
+                                        } ${size.Quantity === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                        onClick={() => size.Quantity > 0 && handleSizeChange(size.SizeValue, size.Quantity)}
+                                        disabled={size.Quantity === 0}
                                     >
                                         {size.SizeValue}
-                                        <span className="text-xs opacity-70 ml-1">({size.Quantity} available)</span>
+                                        <span className="text-xs opacity-70 ml-1">
+                                            ({size.Quantity} available)
+                                        </span>
                                     </button>
                                 ))
                             ) : (
-                                <p className="text-sm text-gray-500 italic">No sizes added yet</p>
+                                <p className="text-sm text-gray-500 italic">No sizes available</p>
                             )}
                         </div>
                     </div>
@@ -110,9 +114,11 @@ const ProductDetailsCard = ({
                         <h3 className="font-medium mb-2">Quantity:</h3>
                         <div className="flex items-center">
                             <button
-                                className="px-3 py-1 border border-base-300 rounded-l"
+                                className={`px-3 py-1 border border-base-300 rounded-l ${
+                                    !selectedSize ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
                                 onClick={() => handleQuantityChange(-1)}
-                                disabled={!productDetails.productSize || productDetails.productSize.length === 0}
+                                disabled={!selectedSize}
                             >
                                 -
                             </button>
@@ -121,24 +127,31 @@ const ProductDetailsCard = ({
                                 className="w-16 px-2 py-1 text-center border-y border-base-300 bg-base-100"
                                 value={quantity}
                                 min="1"
-                                disabled={!productDetails.productSize || productDetails.productSize.length === 0}
+                                disabled={!selectedSize}
                                 readOnly
                             />
                             <button
-                                className="px-3 py-1 border border-base-300 rounded-r"
+                                className={`px-3 py-1 border border-base-300 rounded-r ${
+                                    !selectedSize ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
                                 onClick={() => handleQuantityChange(+1)}
-                                disabled={!productDetails.productSize || productDetails.productSize.length === 0}
+                                disabled={!selectedSize}
                             >
                                 +
                             </button>
                         </div>
+                        {!selectedSize && (
+                            <p className="text-sm text-error mt-1">Please select a size first</p>
+                        )}
                     </div>
 
                     <div className="mt-auto">
                         <button
-                            className="w-full btn btn-primary py-3 px-6 rounded-lg font-medium"
+                            className={`w-full btn py-3 px-6 rounded-lg font-medium ${
+                                !selectedSize ? 'btn-disabled' : isProductFound ? 'btn-error' : 'btn-primary'
+                            }`}
                             onClick={isProductFound ? handleRemoveFromCart : handleAddToCart}
-                            disabled={!productDetails.productSize || productDetails.productSize.length === 0}
+                            disabled={!selectedSize}
                         >
                             {isProductFound ? "Remove From Cart" : "Add To Cart"}
                         </button>

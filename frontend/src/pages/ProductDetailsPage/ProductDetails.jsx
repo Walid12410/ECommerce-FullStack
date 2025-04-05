@@ -13,7 +13,7 @@ const ProductDetailPage = () => {
   const dispatch = useDispatch();
   const { loadingProductDetails, productDetails } = useSelector(state => state.product);
   const { cart } = useSelector(state => state.cart);
-  const [selectedSize, setSelectedSize] = useState({});
+  const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
@@ -22,15 +22,20 @@ const ProductDetailPage = () => {
 
   const handleSizeChange = (size, quantity) => {
     setSelectedSize({ size, quantity });
+    // Reset quantity to 1 when size changes
+    setQuantity(1);
   };
 
   const handleQuantityChange = (value) => {
+    if (!selectedSize) {
+      toast.error("Please select a size first");
+      return;
+    }
+
     if (value === -1 && quantity === 1) {
       return;
     }
-    if (!selectedSize) {
-      return toast.error("Select size first");
-    }
+
     const newQuantity = quantity + value;
     if (selectedSize.quantity < newQuantity) {
       toast.error("Quantity not available");
@@ -41,19 +46,26 @@ const ProductDetailPage = () => {
 
   const handleAddToCart = () => {
     if (!selectedSize) {
-      return toast.error("Please select size");
+      toast.error("Please select a size first");
+      return;
     }
 
-    const productInCart = cart.find((item) => item.product.ProductNo === productDetails.product.ProductNo);
+    const productInCart = cart.find((item) => 
+      item.product.ProductNo === productDetails.product.ProductNo && 
+      item.size.size === selectedSize.size
+    );
+
     if (productInCart) {
-      return toast.error("Product already in cart");
-    } else {
-      dispatch(addToCart({
-        product: productDetails.product,
-        size: selectedSize,
-        quantity
-      }));
+      toast.error("This size is already in your cart");
+      return;
     }
+
+    dispatch(addToCart({
+      product: productDetails.product,
+      size: selectedSize,
+      quantity
+    }));
+    toast.success("Added to cart successfully");
   };
 
   return (

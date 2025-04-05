@@ -1,7 +1,8 @@
+import { Link } from "react-router-dom";
 
 const CollectionProductCard = ({ product }) => {
     return (
-        <div className="card w-80 shadow-lg border border-base-300 p-4">
+        <Link to={`/product/${product?.ProductNo}`} className="card w-80 shadow-lg border border-base-300 p-4 hover:shadow-xl transition-shadow">
             <figure className="w-full h-92 overflow-hidden">
                 <img
                     src={product?.ProductImage}
@@ -20,7 +21,7 @@ const CollectionProductCard = ({ product }) => {
                 <p className="underline text-sm mt-1">{product?.SubCategoryName}</p>
 
             </div>
-        </div>
+        </Link>
     );
 };
 

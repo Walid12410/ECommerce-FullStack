@@ -7,23 +7,26 @@ import CategoriesSidebar from "../../components/CategorySideBar";
 import { Loader2, Package } from "lucide-react";
 import CollectionProductCard from "../../components/CollectionCard";
 import NavBar from "../../components/Navbar";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CategoryPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { subCategoryId } = useParams();
 
     // Redux state selectors
     const { categories, loadingCategory } = useSelector((state) => state.categories);
     const { subCategoryProduct, loadingSubCategoryProduct, hasMoreDataSubCategory } = useSelector((state) => state.product);
 
     // Local state
-    const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+    const [selectedSubCategory, setSelectedSubCategory] = useState(subCategoryId || null);
     const [page, setPage] = useState(1);
 
     // Fetch initial categories & products
     useEffect(() => {
         dispatch(getCategory());
-        dispatch(getSubCategoryProduct({ subCategoryID: null, page: 1, limit: 9 }));
-    }, [dispatch]);
+        dispatch(getSubCategoryProduct({ subCategoryID: subCategoryId || null, page: 1, limit: 9 }));
+    }, [dispatch, subCategoryId]);
 
     // Fetch more products when the page changes
     useEffect(() => {
@@ -37,6 +40,7 @@ const CategoryPage = () => {
         dispatch(clearSubCategoryProduct());
         setSelectedSubCategory(subCategoryId);
         setPage(1);
+        navigate(`/category/${subCategoryId}`);
         dispatch(getSubCategoryProduct({ subCategoryID: subCategoryId, page: 1, limit: 9 }));
     };
 
@@ -63,6 +67,7 @@ const CategoryPage = () => {
         dispatch(clearSubCategoryProduct());
         setSelectedSubCategory(null);
         setPage(1);
+        navigate('/category');
         dispatch(getSubCategoryProduct({ subCategoryID: null, page: 1, limit: 9 }));
     };
 
