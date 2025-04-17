@@ -1,5 +1,8 @@
 const sql = require('mssql');
 
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 // Define the connection configuration
 const config = {

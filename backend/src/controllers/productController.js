@@ -272,13 +272,37 @@ module.exports.countProductsController = asyncHandler(async(req,res)=>{
  * @method get
  * @access public
 */
-module.exports.searchProductController = asyncHandler(async(req,res)=>{
-    const query = req.query.name;
+module.exports.searchProductController = async (req, res) => {
+    try {
+        const { query, page = 1, limit = 10, companyNo, brandNo } = req.query;
+        
+        if (!query) {
+            return res.status(400).json({
+                success: false,
+                message: "Search query is required"
+            });
+        }
 
-    const products = await productModel.searchProducts(query);
-    return res.status(200).json(products); 
-});
-
+        const result = await productModel.searchProducts(
+            query, 
+            parseInt(page), 
+            parseInt(limit),
+            companyNo ? parseInt(companyNo) : null,
+            brandNo ? parseInt(brandNo) : null
+        );
+        
+        return res.status(200).json({
+            success: true,
+            data: result
+        });
+    } catch (error) {
+        console.error("Error in searchProductController:", error);
+        return res.status(500).json({
+            success: false,
+            message: error.message || "Failed to search products"
+        });
+    }
+};
 
 
 //@TODO: delete product controller(CHECK THE OFFER , ORDER ETC...)

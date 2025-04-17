@@ -4,6 +4,7 @@ const { notFound, errorHandler } = require("./middlewares/error");
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');  // Import cors
+const couponRoute = require("./routes/couponRoute");
 
 dotenv.config();
 const app = express();
@@ -45,6 +46,7 @@ app.use("/api/product-size",require("./routes/productSizeRoute"));
 app.use("/api/banner",require("./routes/bannerRoute"));
 app.use("/api/feature",require("./routes/featureRoute"));
 app.use("/api/offer",require("./routes/offerRoute"));
+app.use("/api/coupon", couponRoute);
 
 // Error Handler Middleware
 app.use(notFound);

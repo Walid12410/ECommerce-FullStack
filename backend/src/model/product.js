@@ -122,23 +122,88 @@ const productModel = {
         }
     },
 
-    async searchProducts(query) {
+    async searchProducts(query, page = 1, limit = 10, companyNo = null, brandNo = null) {
         try {
             const pool = await poolPromise();
     
             const result = await pool.request()
                 .input('query', sql.NVarChar, `%${query}%`)
+                .input('page', sql.Int, page)
+                .input('limit', sql.Int, limit)
+                .input('companyNo', sql.Int, companyNo)
+                .input('brandNo', sql.Int, brandNo)
                 .query(`
-                    SELECT * 
-                    FROM ProductDetailsVW
-                    WHERE ProductName LIKE @query 
-                       OR ProductDesc LIKE @query
+                    WITH SearchResults AS (
+                        SELECT 
+                            p.*,
+                            c.CompanyName,
+                            b.BrandName,
+                            sc.SubCategoryName,
+                            cat.CategoryName,
+                            ROW_NUMBER() OVER (ORDER BY 
+                                CASE 
+                                    WHEN p.ProductName LIKE @query THEN 1
+                                    WHEN p.ProductDesc LIKE @query THEN 2
+                                    WHEN b.BrandName LIKE @query THEN 3
+                                    WHEN cat.CategoryName LIKE @query THEN 4
+                                    ELSE 5
+                                END,
+                                p.CreatedAt DESC
+                            ) AS RowNum
+                        FROM Product p WITH (NOLOCK)
+                        LEFT JOIN Company c WITH (NOLOCK) ON p.CompanyNo = c.CompanyNo
+                        LEFT JOIN Brand b WITH (NOLOCK) ON p.BrandNo = b.BrandID
+                        LEFT JOIN SubCategory sc WITH (NOLOCK) ON p.SubCategoryNo = sc.SubCategoryNo
+                        LEFT JOIN Category cat WITH (NOLOCK) ON sc.CategoryNo = cat.CategoryNo
+                        WHERE (p.ProductName LIKE @query 
+                            OR p.ProductDesc LIKE @query
+                            OR b.BrandName LIKE @query
+                            OR cat.CategoryName LIKE @query)
+                            ${companyNo ? 'AND p.CompanyNo = @companyNo' : ''}
+                            ${brandNo ? 'AND p.BrandNo = @brandNo' : ''}
+                    )
+                    SELECT 
+                        ProductNo,
+                        ProductName,
+                        ProductDesc,
+                        Price,
+                        Stock,
+                        ProductImage,
+                        CompanyName,
+                        BrandName,
+                        SubCategoryName,
+                        CategoryName,
+                        CreatedAt,
+                        (SELECT COUNT(*) FROM SearchResults) AS TotalCount
+                    FROM SearchResults
+                    WHERE RowNum BETWEEN ((@page - 1) * @limit + 1) AND (@page * @limit)
+                    ORDER BY RowNum
                 `);
     
-            return result.recordset;
+            if (result.recordset.length === 0) {
+                return {
+                    products: [],
+                    totalCount: 0,
+                    currentPage: page,
+                    totalPages: 0
+                };
+            }
+
+            const totalCount = result.recordset[0].TotalCount;
+            const totalPages = Math.ceil(totalCount / limit);
+            
+            // Remove TotalCount from each product
+            const products = result.recordset.map(({ TotalCount, ...rest }) => rest);
+    
+            return {
+                products,
+                totalCount,
+                currentPage: page,
+                totalPages
+            };
         } catch (error) {
-            console.log("Error searching products: ", error);
-            throw error;
+            console.error("Error searching products:", error);
+            throw new Error("Failed to search products. Please try again later.");
         }
     },
     
