@@ -12,6 +12,7 @@ import themeReducer from './slices/themeSlice';
 import userReducer from './slices/userSlice';
 import colorReducer from './slices/colorSlice';
 import cartReducer from './slices/cartSlice';
+import orderReducer from "./slices/orderSlice";
 
 
 const store = configureStore({
@@ -28,7 +29,8 @@ const store = configureStore({
         theme: themeReducer,
         user: userReducer,
         color: colorReducer,
-        cart: cartReducer
+        cart: cartReducer,
+        orders: orderReducer
     }
 });
 

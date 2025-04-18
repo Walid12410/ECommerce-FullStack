@@ -68,7 +68,7 @@ const NavBar = () => {
                                         Edit Profile
                                     </Link>
                                     <Link
-                                        to="/"
+                                        to="/orders"
                                         className="block px-4 py-2 font-bold text-sm"
                                     >
                                         My Orders

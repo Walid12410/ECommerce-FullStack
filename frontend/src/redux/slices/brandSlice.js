@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchBrandApi } from '../../api/brandApi';
+import toast from 'react-hot-toast';
 
 export const getBrand = createAsyncThunk(
     "brand/fetchBrand",

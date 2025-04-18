@@ -32,6 +32,7 @@ import CartPage from "./pages/CartPage/CartPage";
 import ProfileUpdatePage from "./pages/EditProfilePage/EditProfilePage";
 import AddCompanyPage from "./pages/AdminPages/Company/AddCompanyPage";
 import AddCategoryPage from "./pages/AdminPages/Category/AddCategoryPage";
+import UserOrdersPage from "./pages/UserOrdersPage/UserOrdersPage";
 
 
 const App = () => {
@@ -66,6 +67,7 @@ const App = () => {
         <Route path="/product/:id" element={<ProductDetailPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/profile" element={<ProfileUpdatePage />} />
+        <Route path="/orders" element={<UserOrdersPage />} />
 
         {/** Admin Pages */}
         <Route path="/admin" element={<AdminLoginPage />} />
